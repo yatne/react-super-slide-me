@@ -14,7 +14,7 @@ const initialState: GameState = {
   levels: [],
   currentLevelNumber: 0,
   currentLevelState: {
-    boardSize: 5,
+    boardSize: 7,
     elements: [
       {type: "Start", posX: 0, posY: 0, renderOrder: 0},
       {type: "Wall", posX: 1, posY: 1, renderOrder: 1},
@@ -22,8 +22,9 @@ const initialState: GameState = {
       {type: "Wall", posX: 3, posY: 1, renderOrder: 3},
       {type: "Wall", posX: 0, posY: 1, renderOrder: 4},
       {type: "End", posX: 0, posY: 2, renderOrder: 5},
-      {type: "Box", posX: 4, posY: 4, renderOrder: 6},
-
+      {type: "Box", posX: 0, posY: 4, renderOrder: 6},
+      {type: "Box", posX: 1, posY: 4, renderOrder: 6},
+      {type: "GreenField", posX: 20, posY: 4, renderOrder: 6, state: "Passive"},
     ]
   }
 }
