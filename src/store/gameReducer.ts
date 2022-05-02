@@ -17,7 +17,7 @@ const initialState: GameState = {
     boardSize: 5,
     elements: [
       {type: "Start", posX: 0, posY: 0, renderOrder: 0},
-      {type: "Start", posX: 0, posY: 1, renderOrder: 1},
+      {type: "Wall", posX: 0, posY: 1, renderOrder: 1},
       {type: "End", posX: 1, posY: 1, renderOrder: 2},
     ]
   }

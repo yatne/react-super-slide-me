@@ -60,6 +60,10 @@ const outOfBounds = (posX: number, posY:number, boardSize: number) => {
 
 export const move = (elements: Element[], direction: Direction, boardSize: number) => {
   let newElements = [...elements]
+  newElements.map(element => {
+    element.previousPosX = element.posX;
+    element.previousPosY = element.posY;
+  })
   sortByDirection(elements, direction);
   let tryToMove = true;
   while (tryToMove) {

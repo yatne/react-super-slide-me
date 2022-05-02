@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import BoardTile from "./BoardTile";
-import StyledElement, {Element} from "./StyledElement";
+import StyledElement, {Element, EndElement, StartElement, WallElement} from "./StyledElement";
 import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 interface Props {
   level: Level,
@@ -31,10 +31,50 @@ export const GameBoard = () => {
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
   const dispatch = useDispatch<AppDispatch>()
   const fieldRows = [];
+  const [blocked, setBlocked] = useState(false);
+
+  const blockedRef = React.useRef(blocked);
+  const setBlock = (block: boolean) => {
+    blockedRef.current = block;
+    setBlocked(block);
+  };
 
   useEffect(() => {
-    // dispatch(gameSlice.actions.assignRenderOrder())
+    const arrowEventListenerFunction = (e: KeyboardEvent) => {
+      if (!blockedRef.current) {
+        switch (e.key) {
+          case "ArrowUp":
+            dispatch(gameSlice.actions.moveUp());
+            startBlockade();
+            break;
+          case "ArrowDown":
+            dispatch(gameSlice.actions.moveDown());
+            startBlockade();
+            break;
+          case "ArrowLeft":
+            dispatch(gameSlice.actions.moveLeft());
+            startBlockade();
+            break;
+          case "ArrowRight":
+            dispatch(gameSlice.actions.moveRight());
+            startBlockade();
+            break;
+        }
+      }
+    }
+
+    document.addEventListener('keydown', arrowEventListenerFunction);
+    return () => {
+      document.removeEventListener('keydown', arrowEventListenerFunction)
+    }
   }, [])
+
+  const startBlockade = () => {
+  setBlock(true);
+  setTimeout(() => {
+    setBlock(false);
+  }, 400)
+  }
 
   for (let i = 0 ; i < currentLevel.boardSize; i++) {
     const row = [];
@@ -58,16 +98,21 @@ export const GameBoard = () => {
             <BoardTile boardSize={currentLevel.boardSize} />
           )
         )}
-        {elements.map(element =>
-            <StyledElement
-              key={element.renderOrder}
-              posY={element.posY}
-              posX={element.posX}
-              boardSize={currentLevel.boardSize}
-              type={element.type}
-              previousPosY={element.previousPosY}
-              previousPosX={element.previousPosX}
-            />
+        {elements.map(element => {
+          const eleProps = {
+            ...element,
+            boardSize: currentLevel.boardSize,
+          }
+
+          switch (element.type) {
+            case "Start":
+              return <StartElement {...eleProps} />
+            case "End":
+              return <EndElement {...eleProps} />
+            case "Wall":
+              return <WallElement {...eleProps} />
+          }
+        }
           )
         }
       </BoardContainer>
