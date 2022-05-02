@@ -1,7 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import BoardTile from "./BoardTile";
-import StyledElement, {Element, EndElement, StartElement, WallElement} from "./StyledElement";
+import StyledElement, {
+  BoxElement,
+  Element,
+  EndDoneElement,
+  EndElement,
+  StartElement, VoidElement,
+  WallElement
+} from "./StyledElement";
 import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
@@ -115,12 +122,18 @@ export const GameBoard = () => {
           }
 
           switch (element.type) {
+            case "Box":
+              return <BoxElement {...eleProps} />
+            case "EndDone":
+              return <EndDoneElement {...eleProps} />
             case "Start":
               return <StartElement {...eleProps} />
             case "End":
               return <EndElement {...eleProps} />
             case "Wall":
               return <WallElement {...eleProps} />
+            case "Void":
+              return <VoidElement {...eleProps} />
           }
         }
           )

@@ -4,7 +4,7 @@ import {calculateDistance, moveToMilliseconds} from "../store/timeLogic";
 type ElementProps = Element & { boardSize: number };
 
 export interface Element {
-  type: "Start" | "End" | "Wall",
+  type: "Start" | "End" | "Wall" | "Box" | "EndDone" | "Void",
   posX: number;
   posY: number;
   previousPosX?: number;
@@ -30,15 +30,31 @@ export const StartElement = styled(StyledElement)`
 `
 
 export const EndElement = styled(StyledElement)`
-  box-shadow: inset 0 0 5px 1px #001249;
-  border-radius: 50%;
-  background-color: #c61fe1;
+  box-shadow: inset 0 0 5px 8px #2e57dc;
+  border-radius: 5%;
+  background-color: #f6f6f6;
 `
 
 export const WallElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px #252525;
   border-radius: 5%;
   background-color: #484848;
+`
+
+export const BoxElement = styled(StyledElement)`
+  box-shadow: inset 0 0 5px 1px #252525;
+  border-radius: 22%;
+  background-color: #7a4600;
+`
+
+export const EndDoneElement = styled(StyledElement)`
+  box-shadow: inset 0 0 5px 1px #001249;
+  border-radius: 5%;
+  background-color: #2e57dc;
+`
+
+export const VoidElement = styled(StyledElement)`
+  display: none;
 `
 
 export default StyledElement
