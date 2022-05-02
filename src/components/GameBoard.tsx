@@ -5,7 +5,7 @@ import StyledElement, {
   BoxElement,
   Element,
   EndDoneElement,
-  EndElement,
+  EndElement, GreenFieldElement,
   StartElement, VoidElement,
   WallElement
 } from "./StyledElement";
@@ -134,6 +134,8 @@ export const GameBoard = () => {
               return <WallElement {...eleProps} />
             case "Void":
               return <VoidElement {...eleProps} />
+            case "GreenField":
+              return <GreenFieldElement {...eleProps} />
           }
         }
           )
