@@ -6,6 +6,7 @@ import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
 import {useEffect, useState} from "react";
+import {longestMove} from "../store/timeLogic";
 
 interface Props {
   level: Level,
@@ -32,6 +33,7 @@ export const GameBoard = () => {
   const dispatch = useDispatch<AppDispatch>()
   const fieldRows = [];
   const [blocked, setBlocked] = useState(false);
+  const [blockStart, setBlockStart] = useState(false);
 
   const blockedRef = React.useRef(blocked);
   const setBlock = (block: boolean) => {
@@ -39,25 +41,40 @@ export const GameBoard = () => {
     setBlocked(block);
   };
 
+  const startBlockade = (moveTime: number) => {
+    setTimeout(() => {
+      setBlock(false);
+    }, Math.max(moveTime-100, 0))
+  }
+
+  if (blockStart) {
+    const moveTime = longestMove(currentLevel.elements, currentLevel.boardSize);
+    setBlockStart(false);
+    setBlock(true);
+    startBlockade(moveTime);
+  }
+
   useEffect(() => {
     const arrowEventListenerFunction = (e: KeyboardEvent) => {
       if (!blockedRef.current) {
         switch (e.key) {
           case "ArrowUp":
+            e.preventDefault();
             dispatch(gameSlice.actions.moveUp());
-            startBlockade();
+            setBlockStart(true);
             break;
           case "ArrowDown":
+            e.preventDefault();
             dispatch(gameSlice.actions.moveDown());
-            startBlockade();
+            setBlockStart(true);
             break;
           case "ArrowLeft":
             dispatch(gameSlice.actions.moveLeft());
-            startBlockade();
+            setBlockStart(true);
             break;
           case "ArrowRight":
             dispatch(gameSlice.actions.moveRight());
-            startBlockade();
+            setBlockStart(true);
             break;
         }
       }
@@ -68,13 +85,6 @@ export const GameBoard = () => {
       document.removeEventListener('keydown', arrowEventListenerFunction)
     }
   }, [])
-
-  const startBlockade = () => {
-  setBlock(true);
-  setTimeout(() => {
-    setBlock(false);
-  }, 400)
-  }
 
   for (let i = 0 ; i < currentLevel.boardSize; i++) {
     const row = [];
@@ -116,10 +126,6 @@ export const GameBoard = () => {
           )
         }
       </BoardContainer>
-      <button onClick={() => {dispatch(gameSlice.actions.moveLeft())}}>lewo</button>
-      <button onClick={() => {dispatch(gameSlice.actions.moveRight())}}>prawo</button>
-      <button onClick={() => {dispatch(gameSlice.actions.moveUp())}}>góra</button>
-      <button onClick={() => {dispatch(gameSlice.actions.moveDown())}}>dół</button>
     </>
   )
 }
