@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {calculateDistance, moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = Element & { boardSize: number };
 
@@ -11,26 +12,15 @@ export interface Element {
   renderOrder?: number;
 }
 
-const calculateDistance = (props: ElementProps) => {
-  return Math.max(
-    Math.abs(props.posX - getOldPos(props.posX, props.previousPosX)),
-    Math.abs(props.posY - getOldPos(props.posY, props.previousPosY))
-  );
-}
-
-const getOldPos = (pos: number, oldPos: number | undefined) => {
-  if (oldPos === undefined) return pos;
-  return oldPos;
-}
 
 const StyledElement = styled.div<ElementProps>`
   position: absolute;
+  height: 0;
   top: calc(${props => props.theme.gameBoardMargin} + ${props => props.posY} * ${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   left: calc(${props => props.theme.gameBoardMargin} + ${props => props.posX} * ${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   width: calc(${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   padding-bottom: calc(${props => props.theme.width ? props.theme.width : '400px'} / ${props => props.boardSize});
-  height: 0;
-  transition: ${props => calculateDistance(props) / (2 * props.boardSize) }s linear;
+  transition: ${props => moveToMilliseconds(props, props.boardSize)}ms linear;
 `
 
 export const StartElement = styled(StyledElement)`
