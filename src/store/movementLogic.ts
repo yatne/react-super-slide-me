@@ -3,14 +3,22 @@ import {Element} from "../components/StyledElement";
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
 const elementMovable = (element: Element): boolean => {
-  return (["Start", "End"].includes(element.type));
+  return (["Start", "Box"].includes(element.type));
 };
 
-const elementsCanInteract = (element1: Element, element2: Element) => {
+const elementsCanInteract = (ele1: Element, ele2: Element) => {
+  if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End")) {
+    return true;
+  }
   return false;
 }
 
-const interact = (element1: Element, element2: Element | undefined) => {}
+const interact = (ele1: Element, ele2: Element | undefined) => {
+  if (ele1.type === "Start" && ele2?.type === "End") {
+    ele1.type = "Void";
+    ele2.type = "EndDone";
+  }
+}
 
 const sortByDirection = (elements: Element[], direction: Direction) => {
   switch (direction) {
