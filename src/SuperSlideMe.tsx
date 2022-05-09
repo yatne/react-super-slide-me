@@ -6,7 +6,6 @@ import {Provider} from "react-redux";
 import {applyMiddleware, compose, configureStore} from "@reduxjs/toolkit";
 import gameReducer, {gameSlice} from "./store/gameReducer";
 import {Element} from "./components/StyledElement";
-import {useEffect} from "react";
 
 interface GameProps {
   levels: Level[],

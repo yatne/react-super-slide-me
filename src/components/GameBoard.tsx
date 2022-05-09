@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import BoardTile from "./BoardTile";
-import StyledElement, {
+import {
   BoxElement,
   Element,
-  EndDoneElement,
   EndElement, GreenFieldElement,
   StartElement, VoidElement,
   WallElement
@@ -124,8 +123,6 @@ export const GameBoard = () => {
           switch (element.type) {
             case "Box":
               return <BoxElement {...eleProps} />
-            case "EndDone":
-              return <EndDoneElement {...eleProps} />
             case "Start":
               return <StartElement {...eleProps} />
             case "End":
