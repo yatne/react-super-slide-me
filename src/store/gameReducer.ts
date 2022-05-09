@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type {Level, RootState} from '../SuperSlideMe'
+import type {Level} from '../SuperSlideMe'
 import {move, sortByRenderOrder} from "./movementLogic";
 
 // Define a type for the slice state
@@ -21,10 +21,10 @@ const initialState: GameState = {
       {type: "Wall", posX: 2, posY: 1, renderOrder: 2},
       {type: "Wall", posX: 3, posY: 1, renderOrder: 3},
       {type: "Wall", posX: 0, posY: 1, renderOrder: 4},
-      {type: "End", posX: 0, posY: 2, renderOrder: 5},
+      {type: "End", posX: 0, posY: 2, renderOrder: 5, state: "Default"},
       {type: "Box", posX: 0, posY: 4, renderOrder: 6},
-      {type: "Box", posX: 1, posY: 4, renderOrder: 6},
-      {type: "GreenField", posX: 20, posY: 4, renderOrder: 6, state: "Passive"},
+      {type: "Box", posX: 1, posY: 4, renderOrder: 7},
+      {type: "GreenField", posX: 4, posY: 4, renderOrder: 8, state: "Default"},
     ]
   }
 }

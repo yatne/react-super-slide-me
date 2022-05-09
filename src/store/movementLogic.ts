@@ -10,7 +10,7 @@ const elementsCanInteract = (ele1: Element, ele2: Element) => {
   if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End")) {
     return true;
   }
-  if ([ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Active")) {
+  if ([ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
     return true
   }
   return false;
@@ -20,10 +20,10 @@ const interact = (ele1: Element, ele2: Element | undefined) => {
   if (ele2 === undefined) return;
   if (ele1.type === "Start" && ele2.type === "End") {
     ele1.type = "Void";
-    ele2.type = "EndDone";
+    ele2.state = "Triggered";
   }
-  if (ele2.type === "GreenField" && ele2.state !== "Active") {
-    ele2.state = "Active";
+  if (ele2.type === "GreenField" && ele2.state !== "Triggered") {
+    ele2.state = "Triggered";
     ele2.previousPosX = ele1.previousPosX;
     ele2.previousPosY = ele1.previousPosY;
   }
