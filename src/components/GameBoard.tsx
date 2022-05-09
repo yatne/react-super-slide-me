@@ -14,12 +14,12 @@ import {gameSlice} from "../store/gameReducer";
 import {useEffect, useState} from "react";
 import {longestMove} from "../store/timeLogic";
 
-interface Props {
-  level: Level,
-}
-
 interface ContainerProps {
   theme: any;
+}
+
+interface Props {
+  onLevelFinish: () => void;
 }
 
 const BoardContainer = styled.div<ContainerProps>`
@@ -34,10 +34,10 @@ const BoardContainer = styled.div<ContainerProps>`
   padding: ${props => props.theme.gameBoardMargin} ;
 `
 
-export const GameBoard = () => {
+export const GameBoard = (props : Props) => {
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
   const dispatch = useDispatch<AppDispatch>()
-  const fieldRows = [];
+  const fields = [];
   const [blocked, setBlocked] = useState(false);
   const [blockStart, setBlockStart] = useState(false);
 
@@ -54,6 +54,7 @@ export const GameBoard = () => {
   }
 
   if (blockStart) {
+    if (currentLevel === null) return null;
     const moveTime = longestMove(currentLevel.elements, currentLevel.boardSize);
     setBlockStart(false);
     setBlock(true);
@@ -90,54 +91,50 @@ export const GameBoard = () => {
     return () => {
       document.removeEventListener('keydown', arrowEventListenerFunction)
     }
-  }, [])
+  }, []);
 
-  for (let i = 0 ; i < currentLevel.boardSize; i++) {
-    const row = [];
-    for (let j = 0 ; j < currentLevel.boardSize; j++) {
-      row.push('');
+  if (currentLevel !== null) {
+    for (let i = 0; i < currentLevel.boardSize * currentLevel.boardSize; i++) {
+      fields.push(i);
     }
-    fieldRows.push(row);
   }
 
-  let elements: Element[] = [...currentLevel.elements];
-  elements.sort((e1: Element, e2: Element) => {
-    if (!e1.renderOrder || !e2.renderOrder) return 0;
-    return e1.renderOrder > e2.renderOrder ? 1 : e1.renderOrder === e2.renderOrder ? 0 : -1;
-  });
+  if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" )) {
+    props.onLevelFinish()
+  }
 
   return (
-    <>
-      <BoardContainer>
-        {fieldRows.map(row =>
-          row.map(() =>
-            <BoardTile boardSize={currentLevel.boardSize} />
-          )
-        )}
-        {elements.map(element => {
-          const eleProps = {
-            ...element,
-            boardSize: currentLevel.boardSize,
-          }
-
-          switch (element.type) {
-            case "Box":
-              return <BoxElement {...eleProps} />
-            case "Start":
-              return <StartElement {...eleProps} />
-            case "End":
-              return <EndElement {...eleProps} />
-            case "Wall":
-              return <WallElement {...eleProps} />
-            case "Void":
-              return <VoidElement {...eleProps} />
-            case "GreenField":
-              return <GreenFieldElement {...eleProps} />
-          }
-        }
-          )
-        }
-      </BoardContainer>
-    </>
+    <BoardContainer>
+      {currentLevel ? (
+        <>
+          {fields.map((fieldNr) =>
+            <BoardTile key={fieldNr} boardSize={currentLevel.boardSize}/>
+          )}
+          {currentLevel.elements.map(element => {
+            const eleProps = {
+              ...element,
+              boardSize: currentLevel.boardSize,
+            }
+            switch (element.type) {
+              case "Box":
+                return <BoxElement {...eleProps} />
+              case "Start":
+                return <StartElement {...eleProps} />
+              case "End":
+                return <EndElement {...eleProps} />
+              case "Wall":
+                return <WallElement {...eleProps} />
+              case "Void":
+                return <VoidElement {...eleProps} />
+              case "GreenField":
+                return <GreenFieldElement {...eleProps} />
+            }
+          })}
+        </>
+      ) : (
+        <div>Loading...</div>
+      )
+      }
+    </BoardContainer>
   )
 }

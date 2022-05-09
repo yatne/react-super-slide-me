@@ -28,6 +28,7 @@ export const StartElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px #001249;
   border-radius: 50%;
   background-color: #2e57dc;
+  z-index: 300;
 `
 
 export const WallElement = styled(StyledElement)`
@@ -48,6 +49,7 @@ export const EndElement = styled(StyledElement)`
   background-color: ${props => props.state === "Triggered" ? '#2e57dc' : '#f6f6f6'};
   transition: 200ms;
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
+  z-index: 500;
 `
 
 export const GreenFieldElement = styled(StyledElement)<ElementProps>`

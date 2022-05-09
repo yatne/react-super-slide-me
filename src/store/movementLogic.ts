@@ -3,7 +3,7 @@ import {Element} from "../components/StyledElement";
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
 const elementMovable = (element: Element): boolean => {
-  return (["Start", "Box"].includes(element.type));
+  return (["Start", "Box"].includes(element.type)) && element.state !== "Triggered";
 };
 
 const elementsCanInteract = (ele1: Element, ele2: Element) => {
@@ -19,7 +19,7 @@ const elementsCanInteract = (ele1: Element, ele2: Element) => {
 const interact = (ele1: Element, ele2: Element | undefined) => {
   if (ele2 === undefined) return;
   if (ele1.type === "Start" && ele2.type === "End") {
-    ele1.type = "Void";
+    ele1.state = "Triggered";
     ele2.state = "Triggered";
   }
   if (ele2.type === "GreenField" && ele2.state !== "Triggered") {
