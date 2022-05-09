@@ -1,4 +1,4 @@
-import {Element} from "../components/StyledElement";
+import {Element} from "../components/StyledElements";
 
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
@@ -21,6 +21,8 @@ const interact = (ele1: Element, ele2: Element | undefined) => {
   if (ele1.type === "Start" && ele2.type === "End") {
     ele1.state = "Triggered";
     ele2.state = "Triggered";
+    ele2.previousPosX = ele1.previousPosX;
+    ele2.previousPosY = ele1.previousPosY;
   }
   if (ele2.type === "GreenField" && ele2.state !== "Triggered") {
     ele2.state = "Triggered";

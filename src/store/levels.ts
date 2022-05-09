@@ -1,4 +1,4 @@
-import { Element } from "../components/StyledElement";
+import { Element } from "../components/StyledElements";
 
 export const levels = [{
   boardSize: 7,

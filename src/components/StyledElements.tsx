@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {calculateDistance, moveToMilliseconds} from "../store/timeLogic";
+import {moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = Element & { boardSize: number };
 
@@ -47,7 +47,6 @@ export const EndElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px ${props => props.state === "Triggered" ? '1px #001249' : '8px #2e57dc'}; 
   border-radius: 5%;
   background-color: ${props => props.state === "Triggered" ? '#2e57dc' : '#f6f6f6'};
-  transition: 200ms;
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
   z-index: 500;
 `
@@ -56,7 +55,6 @@ export const GreenFieldElement = styled(StyledElement)<ElementProps>`
   box-shadow: inset 0 0 5px 1px ${props => props.state === "Triggered" ? '#252525' : '#2e7200'};
   background-color: ${props => props.state === "Triggered" ? '#2e7200' : '#ccffc5'};
   border-radius: ${props => props.state === "Triggered" ? '5%' : '0'};
-  transition: background-color 200ms;
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
 `
 

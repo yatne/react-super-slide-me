@@ -7,7 +7,7 @@ import {
   EndElement, GreenFieldElement,
   StartElement, VoidElement,
   WallElement
-} from "./StyledElement";
+} from "./StyledElements";
 import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";

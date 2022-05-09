@@ -1,4 +1,4 @@
-import {Element} from "../components/StyledElement";
+import {Element} from "../components/StyledElements";
 
 export const calculateDistance = (props: Element) => {
   return Math.max(
@@ -8,6 +8,10 @@ export const calculateDistance = (props: Element) => {
 }
 
 export const moveToMilliseconds = (element: Element, boardSize: number) => {
+  if (element.type === "GreenField" || element.type === "End") {
+    console.log(element.type, 1000 * calculateDistance(element) / (2 * boardSize))
+  }
+
   return 1000 * calculateDistance(element) / (2 * boardSize);
 }
 

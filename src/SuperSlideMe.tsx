@@ -4,7 +4,7 @@ import {theme} from "./components/theme";
 import {Provider} from "react-redux";
 import { configureStore} from "@reduxjs/toolkit";
 import gameReducer from "./store/gameReducer";
-import {Element} from "./components/StyledElement";
+import {Element} from "./components/StyledElements";
 import {Game} from "./components/Game";
 
 interface GameProps {
