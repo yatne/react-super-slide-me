@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {GameBoard} from "./components/GameBoard";
 import {ThemeProvider} from "styled-components";
 import {theme} from "./components/theme";
 import {Provider} from "react-redux";
-import {applyMiddleware, compose, configureStore} from "@reduxjs/toolkit";
-import gameReducer, {gameSlice} from "./store/gameReducer";
+import { configureStore} from "@reduxjs/toolkit";
+import gameReducer from "./store/gameReducer";
 import {Element} from "./components/StyledElement";
+import {Game} from "./components/Game";
 
 interface GameProps {
   levels: Level[],
-  gameName?: string,
+  gameName: string,
   width: string;
 }
 
@@ -17,6 +17,7 @@ export interface Level {
   elements: Element[],
   boardSize: number,
   name?: string,
+  number: number,
 }
 
 export const store = configureStore({
@@ -29,16 +30,12 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 export const SuperSlideMe = (props: GameProps) => {
-  // useEffect(() => {
-  //   gameSlice.actions.loadLevels(props.levels);
-  // }, [store])
 
   return (
     <div>
       <Provider store={store}>
         <ThemeProvider theme={theme({width: props.width})}>
-          {props.gameName}
-          <GameBoard/>
+          <Game name={props.gameName} />
         </ThemeProvider>
       </Provider>
     </div>
