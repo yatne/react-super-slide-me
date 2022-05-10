@@ -3,7 +3,7 @@ import {moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = CurrentElement & { boardSize: number };
 
-type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField";
+export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField";
 type ElementState = "Triggered" | "Default";
 
 export interface Element {
