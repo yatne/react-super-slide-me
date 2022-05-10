@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type {Level} from '../SuperSlideMe'
+import type {CurrentLevel, Level} from '../SuperSlideMe'
 import {move, sortByRenderOrder} from "./movementLogic";
+import {Element, CurrentElement} from "../components/StyledElements";
 
 // Define a type for the slice state
 export interface GameState {
   levels: Level[],
   currentLevelNumber: number,
-  currentLevelState: Level | null,
+  currentLevelState: CurrentLevel | null,
 }
 
 // Define the initial state using that type
@@ -14,6 +15,23 @@ const initialState: GameState = {
   levels: [],
   currentLevelNumber: 0,
   currentLevelState: null
+}
+
+const transformToCurrentLevel = (level: Level, index: number): CurrentLevel => {
+  return {
+    boardSize: level.boardSize,
+    number: index,
+    elements: level.elements.map((element, index) => transformToCurrentElement(element, index)),
+  }
+}
+
+const transformToCurrentElement = (element: Element, index: number): CurrentElement => {
+  return {
+    ...element,
+    previousPosX: element.posX,
+    previousPosY: element.posY,
+    renderOrder: index
+  }
 }
 
 export const gameSlice = createSlice({
@@ -24,12 +42,10 @@ export const gameSlice = createSlice({
       state.levels = action.payload;
     },
     startLevel: (state, action: PayloadAction<number>) => {
-      state.currentLevelState = {...state.levels[action.payload]}
-      state.currentLevelState.elements.map((element, index) => {
-        element.renderOrder = index;
-      });
+      state.currentLevelState = transformToCurrentLevel(state.levels[action.payload], action.payload);
       sortByRenderOrder(state.currentLevelState.elements)
     },
+
     moveRight: (state) => {
       if (state.currentLevelState === null ) return
       state.currentLevelState.elements = move(state.currentLevelState.elements, 'Right', state.currentLevelState.boardSize)

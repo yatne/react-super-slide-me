@@ -16,7 +16,6 @@ export const Game = (props: {name: string}) => {
   }, [])
 
   const onLevelFinished = () => {
-    console.log("finish")
     setTimeout(() => {
       if (currentLevel !== null)
       dispatch(gameSlice.actions.startLevel(currentLevel?.number + 1))

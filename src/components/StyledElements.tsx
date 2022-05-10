@@ -1,18 +1,23 @@
 import styled from "styled-components";
 import {moveToMilliseconds} from "../store/timeLogic";
 
-type ElementProps = Element & { boardSize: number };
+type ElementProps = CurrentElement & { boardSize: number };
+
+type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField";
+type ElementState = "Triggered" | "Default";
 
 export interface Element {
-  type: "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField",
+  type: ElementType,
   posX: number;
   posY: number;
-  previousPosX?: number;
-  previousPosY?: number;
-  renderOrder?: number;
-  state?: "Triggered" | "Default";
+  state?: ElementState;
 }
 
+export interface CurrentElement extends Element {
+  previousPosX: number;
+  previousPosY: number;
+  renderOrder: number;
+}
 
 const StyledElement = styled.div<ElementProps>`
   position: absolute;

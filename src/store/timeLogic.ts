@@ -1,21 +1,17 @@
-import {Element} from "../components/StyledElements";
+import {CurrentElement, Element} from "../components/StyledElements";
 
-export const calculateDistance = (props: Element) => {
+export const calculateDistance = (props: CurrentElement) => {
   return Math.max(
     Math.abs(props.posX - getOldPos(props.posX, props.previousPosX)),
     Math.abs(props.posY - getOldPos(props.posY, props.previousPosY))
   );
 }
 
-export const moveToMilliseconds = (element: Element, boardSize: number) => {
-  if (element.type === "GreenField" || element.type === "End") {
-    console.log(element.type, 1000 * calculateDistance(element) / (2 * boardSize))
-  }
-
+export const moveToMilliseconds = (element: CurrentElement, boardSize: number) => {
   return 1000 * calculateDistance(element) / (2 * boardSize);
 }
 
-export const longestMove = (elements: Element[], boardSize: number) => {
+export const longestMove = (elements: CurrentElement[], boardSize: number) => {
   let millis = 0;
   elements.forEach((element) => {
     if (moveToMilliseconds(element, boardSize) > millis) {

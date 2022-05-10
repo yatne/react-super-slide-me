@@ -1,4 +1,4 @@
-import {Element} from "../components/StyledElements";
+import {CurrentElement, Element} from "../components/StyledElements";
 
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
@@ -16,7 +16,7 @@ const elementsCanInteract = (ele1: Element, ele2: Element) => {
   return false;
 }
 
-const interact = (ele1: Element, ele2: Element | undefined) => {
+const interact = (ele1: CurrentElement, ele2: CurrentElement | undefined) => {
   if (ele2 === undefined) return;
   if (ele1.type === "Start" && ele2.type === "End") {
     ele1.state = "Triggered";
@@ -48,14 +48,14 @@ const sortByDirection = (elements: Element[], direction: Direction) => {
   }
 }
 
-export const sortByRenderOrder = (elements: Element[]) => {
-  elements.sort((e1: Element, e2: Element) => {
+export const sortByRenderOrder = (elements: CurrentElement[]) => {
+  elements.sort((e1, e2) => {
     if (!e1.renderOrder || !e2.renderOrder) return 0;
     return e1.renderOrder > e2.renderOrder ? 1 : e1.renderOrder === e2.renderOrder ? 0 : -1;
   });
 }
 
-const findElementOnAttPos = (posX: number, posY:number, elements: Element[]): Element | undefined => {
+const findElementOnAttPos = (posX: number, posY:number, elements: CurrentElement[]): CurrentElement | undefined => {
   return elements.find(ele => ele.posX === posX && ele.posY === posY)
 }
 
@@ -77,7 +77,7 @@ const outOfBounds = (posX: number, posY:number, boardSize: number) => {
 
 }
 
-export const move = (elements: Element[], direction: Direction, boardSize: number) => {
+export const move = (elements: CurrentElement[], direction: Direction, boardSize: number) => {
   let newElements = [...elements]
   newElements.map(element => {
     element.previousPosX = element.posX;
