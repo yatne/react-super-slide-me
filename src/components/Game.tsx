@@ -5,6 +5,7 @@ import {gameSlice} from "../store/gameReducer";
 import {levels} from "../store/levels";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../SuperSlideMe";
+import {Controls} from "./Controls";
 
 export const Game = (props: {name: string}) => {
   const dispatch = useDispatch<AppDispatch>()
@@ -26,6 +27,7 @@ export const Game = (props: {name: string}) => {
     <div>
       {props.name}
       <GameBoard onLevelFinish={onLevelFinished}/>
+      <Controls />
     </div>
   )
 }
