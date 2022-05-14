@@ -8,13 +8,15 @@ export interface GameState {
   levels: Level[],
   currentLevelNumber: number,
   currentLevelState: CurrentLevel | null,
+  endGameReached: boolean,
 }
 
 // Define the initial state using that type
 const initialState: GameState = {
   levels: [],
   currentLevelNumber: 0,
-  currentLevelState: null
+  currentLevelState: null,
+  endGameReached: false,
 }
 
 const transformToCurrentLevel = (level: Level, index: number): CurrentLevel => {
@@ -43,9 +45,26 @@ export const gameSlice = createSlice({
     },
     startLevel: (state, action: PayloadAction<number>) => {
       state.currentLevelState = transformToCurrentLevel(state.levels[action.payload], action.payload);
+      state.endGameReached = false;
+      state.currentLevelNumber = action.payload;
       sortByRenderOrder(state.currentLevelState.elements)
     },
-
+    nextLevel: (state, action: PayloadAction) => {
+      if (state.currentLevelNumber + 1 >= state.levels.length) {
+        state.endGameReached = true;
+      } else {
+        state.currentLevelNumber = state.currentLevelNumber + 1;
+        state.currentLevelState = transformToCurrentLevel(state.levels[state.currentLevelNumber], state.currentLevelNumber);
+        sortByRenderOrder(state.currentLevelState.elements);
+      }
+    },
+    previousLevel: (state, action: PayloadAction) => {
+      if (state.currentLevelNumber > 0) {
+        state.currentLevelNumber = state.currentLevelNumber - 1;
+        state.currentLevelState = transformToCurrentLevel(state.levels[state.currentLevelNumber], state.currentLevelNumber);
+        sortByRenderOrder(state.currentLevelState.elements);
+      }
+    },
     moveRight: (state) => {
       if (state.currentLevelState === null ) return
       state.currentLevelState.elements = move(state.currentLevelState.elements, 'Right', state.currentLevelState.boardSize)
