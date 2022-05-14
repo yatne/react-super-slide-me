@@ -6,6 +6,7 @@ import {gameSlice} from "../store/gameReducer";
 export const Controls: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const currentLevelNumber = useSelector((state: RootState) => state.game.currentLevelNumber)
+  const maxLevel = useSelector((state: RootState) => state.game.unlockedLevel)
 
   const handleNextLevel = () => {
     dispatch(gameSlice.actions.nextLevel())
@@ -17,8 +18,8 @@ export const Controls: React.FC = () => {
 
   return (
     <div>
-      <button onClick={handleNextLevel}>Next Level</button>
-      <button onClick={handlePreviousLevel}>Previous Level</button>
+      <button disabled={currentLevelNumber === maxLevel} onClick={handleNextLevel}>Next Level</button>
+      <button disabled={currentLevelNumber === 0} onClick={handlePreviousLevel}>Previous Level</button>
       <button onClick={() => dispatch(gameSlice.actions.startLevel(currentLevelNumber))}>Reset</button>
     </div>
   )

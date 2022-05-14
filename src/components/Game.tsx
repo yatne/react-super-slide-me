@@ -10,10 +10,11 @@ import {Controls} from "./Controls";
 export const Game = (props: {name: string}) => {
   const dispatch = useDispatch<AppDispatch>()
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
+  const maxLevel = useSelector((state: RootState) => state.game.unlockedLevel)
 
   useEffect(() => {
     dispatch(gameSlice.actions.loadLevels(levels));
-    dispatch(gameSlice.actions.startLevel(0));
+    dispatch(gameSlice.actions.startLevel(maxLevel));
   }, [])
 
   const onLevelFinished = () => {
