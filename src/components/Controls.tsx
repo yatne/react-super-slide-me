@@ -2,6 +2,42 @@ import * as React from "react"
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../SuperSlideMe";
 import {gameSlice} from "../store/gameReducer";
+import styled from "styled-components";
+
+interface ContainerProps {
+  theme: any;
+}
+
+const StyledButton = styled.button`
+  box-shadow: 0 0 5px 1px #818181;
+  background-color: #f6f6f6;
+  height: 2rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+  color: #2e57dc;
+  width: 100%;
+  
+  &:hover {
+    background-color: #e6e6e6;
+  }
+  
+  &:active {
+    background-color: #d6d6d6;
+  }
+`
+
+const ButtonPlace = styled.div`
+  width: 30%;
+`
+
+const ControlsContainer = styled.div<ContainerProps>`
+  width: ${props => props.theme.width ? props.theme.width : '400px'};
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: ${props => props.theme.gameBoardMargin} ;
+`
 
 export const Controls: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -17,10 +53,25 @@ export const Controls: React.FC = () => {
   }
 
   return (
-    <div>
-      <button disabled={currentLevelNumber === maxLevel} onClick={handleNextLevel}>Next Level</button>
-      <button disabled={currentLevelNumber === 0} onClick={handlePreviousLevel}>Previous Level</button>
-      <button onClick={() => dispatch(gameSlice.actions.startLevel(currentLevelNumber))}>Reset</button>
-    </div>
+    <ControlsContainer>
+      <ButtonPlace>
+        {currentLevelNumber > 0 && (
+          <StyledButton disabled={currentLevelNumber === 0} onClick={handlePreviousLevel}>Previous Level</StyledButton>
+        )}
+      </ButtonPlace>
+      <ButtonPlace>
+        <StyledButton onClick={() => dispatch(gameSlice.actions.startLevel(currentLevelNumber))}>Reset</StyledButton>
+      </ButtonPlace>
+      <ButtonPlace>
+        {currentLevelNumber !== maxLevel && (
+          <StyledButton
+            disabled={currentLevelNumber === maxLevel}
+            onClick={handleNextLevel}
+          >
+            Next Level
+          </StyledButton>
+        )}
+      </ButtonPlace>
+    </ControlsContainer>
   )
 }

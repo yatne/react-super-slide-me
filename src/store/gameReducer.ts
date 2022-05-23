@@ -41,7 +41,7 @@ const transformToCurrentElement = (element: Element, index: number): CurrentElem
     ...element,
     previousPosX: element.posX,
     previousPosY: element.posY,
-    renderOrder: index
+    renderOrder: index,
   }
 }
 
