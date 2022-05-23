@@ -20,9 +20,6 @@ export const Game = (props : Props) => {
   const levelCount = useSelector((state: RootState) => state.game.levels.length)
 
   useEffect(() => {
-
-    console.log(props.levelConfig, props.customLevels, prepareLevels(props.levelConfig, props.customLevels))
-
     dispatch(gameSlice.actions.loadLevels(prepareLevels(props.levelConfig, props.customLevels)));
     dispatch(gameSlice.actions.startLevel(maxLevel));
   }, [])
@@ -31,7 +28,6 @@ export const Game = (props : Props) => {
     setTimeout(() => {
       if (currentLevel !== null) {
         dispatch(gameSlice.actions.startLevel(currentLevel?.number + 1))
-        console.log({currentLevel, levelCount})
         if (currentLevel?.number === levelCount - 2 && props.onLastLevelReached) {
           props.onLastLevelReached();
         }

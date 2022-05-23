@@ -63,7 +63,7 @@ export const Controls: React.FC = () => {
 
   return (
     <ControlsContainer>
-      {currentLevelNumber === 0 && (
+      {currentLevelNumber < 2 && (
         <InfoPlace>
           Use Arrow Keys to move around (or swipe if you're on mobile)
         </InfoPlace>

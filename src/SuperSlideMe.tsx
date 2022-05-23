@@ -13,7 +13,7 @@ export interface LevelConfig {
   levelFilter?: levelFilter,
 }
 
-export type levelSet = "A" | "B" | "C";
+export type levelSet = "A" | "B" | "C" | "X";
 export type levelFilter = "all" | "onlyEasy" | "onlyHard" | "short" | "onlyCustom";
 
 interface GameProps {
@@ -44,7 +44,7 @@ export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
 const defaultLevelConfig: LevelConfig = {
-  levelSets: ["A", "B", "C"],
+  levelSets: ["A", "B", "C", "X"],
   levelFilter: "all",
 }
 

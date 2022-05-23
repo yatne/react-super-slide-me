@@ -6,6 +6,7 @@ import {BEasy} from "./levelPacks/b-easy";
 import {BHard} from "./levelPacks/b-hard";
 import {CEasy} from "./levelPacks/c-easy";
 import {CHard} from "./levelPacks/c-hard";
+import {XHard} from "./levelPacks/x-hard";
 
 export type ReadableLevel = string;
 
@@ -21,6 +22,10 @@ const availableLevels = {
   setC: {
     easy: CEasy,
     hard: CHard,
+  },
+  setX: {
+    easy: [],
+    hard: XHard,
   }
 }
 
@@ -52,6 +57,10 @@ const loadLevelsByConfig = (config: LevelConfig, additionalLevels: ReadableLevel
       case "C":
         levels.push(...loadLevelSetByConfig(config, availableLevels.setC));
         break
+      case "X":
+        if (config.levelFilter !== "short") {
+          levels.push(...loadLevelSetByConfig(config, availableLevels.setX))
+        }
     }
   })
   levels.push(...additionalLevels)
@@ -82,6 +91,9 @@ const transformLevels = (rLevels: ReadableLevel[]): Level[] => {
 
 const transformLevel = (rLevel: ReadableLevel): Level => {
   const boardSize = Math.sqrt(rLevel.length);
+  if (!Number.isInteger(boardSize)) {
+    throw new Error("One of the levels is not a square!")
+  }
   const elements = []
   for (let i = 0; i < rLevel.length; i++) {
     if (rLevel[i] !== '.') {
@@ -112,6 +124,8 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
     case 'g':
       type = "GreenField";
       break;
+    default:
+      throw new Error(`Error in one of the levels: unknown element: ${elementChar}.`)
   }
   const posX = index % boardSize;
   const posY = Math.floor(index / boardSize);
@@ -124,6 +138,5 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
 
 export const prepareLevels = (config: LevelConfig, customLevels: ReadableLevel[]) => {
   const readableLevels = loadLevelsByConfig(config, customLevels);
-  console.log({readableLevels})
   return transformLevels(readableLevels);
 }

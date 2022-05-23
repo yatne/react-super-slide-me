@@ -37,6 +37,7 @@ const BoardContainer = styled.div<ContainerProps>`
 
 export const GameBoard = (props : Props) => {
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
+  const currentLevelNumber = useSelector((state: RootState) => state.game.currentLevelNumber)
   const dispatch = useDispatch<AppDispatch>()
   const fields = [];
   const [blocked, setBlocked] = useState(false);
@@ -94,9 +95,11 @@ export const GameBoard = (props : Props) => {
       if (!blockedRef.current) {
         switch (e.key) {
           case "ArrowUp":
+            e.preventDefault()
             moveUp();
             break;
           case "ArrowDown":
+            e.preventDefault()
             moveDown();
             break;
           case "ArrowLeft":
@@ -104,6 +107,9 @@ export const GameBoard = (props : Props) => {
             break;
           case "ArrowRight":
             moveRight();
+            break;
+          case "R":
+            gameSlice.actions.startLevel(currentLevelNumber);
             break;
         }
       }

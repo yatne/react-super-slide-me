@@ -7,7 +7,7 @@ const elementMovable = (element: Element): boolean => {
 };
 
 const elementsCanInteract = (ele1: Element, ele2: Element) => {
-  if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End")) {
+  if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End" && ele.state !== "Triggered")) {
     return true;
   }
   if ([ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
