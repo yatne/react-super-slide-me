@@ -30,13 +30,22 @@ const ButtonPlace = styled.div`
   width: 30%;
 `
 
+const InfoPlace = styled.div`
+  width: 100%;
+  background-color: #f6f6f6;
+  color: #484848;
+  font-size: 1rem;
+  line-height: 2;
+`
+
 const ControlsContainer = styled.div<ContainerProps>`
   width: ${props => props.theme.width ? props.theme.width : '400px'};
   display: flex;
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
-  padding: ${props => props.theme.gameBoardMargin} ;
+  padding: ${props => props.theme.gameBoardMargin};
+  flex-wrap: wrap;
 `
 
 export const Controls: React.FC = () => {
@@ -54,6 +63,11 @@ export const Controls: React.FC = () => {
 
   return (
     <ControlsContainer>
+      {currentLevelNumber === 0 && (
+        <InfoPlace>
+          Use Arrow Keys to move around (or swipe if you're on mobile)
+        </InfoPlace>
+      )}
       <ButtonPlace>
         {currentLevelNumber > 0 && (
           <StyledButton disabled={currentLevelNumber === 0} onClick={handlePreviousLevel}>Previous Level</StyledButton>
