@@ -1,54 +1,30 @@
-import {Level} from "../SuperSlideMe";
+import {Level, LevelConfig} from "../SuperSlideMe";
 import {ElementType, Element} from "../components/StyledElements";
+import {AEasy} from "./levelPacks/a-easy";
+import {AHard} from "./levelPacks/a-hard";
+import {BEasy} from "./levelPacks/b-easy";
+import {BHard} from "./levelPacks/b-hard";
+import {CEasy} from "./levelPacks/c-easy";
+import {CHard} from "./levelPacks/c-hard";
 
-type ReadableLevel = string;
+export type ReadableLevel = string;
 
-const readableLevels: ReadableLevel[] = [
-  '..x...' +
-  '..g...' +
-  '..ge..' +
-  'x.s...' +
-  '.....x' +
-  '..x...',
+const availableLevels = {
+  setA: {
+    easy: AEasy,
+    hard: AHard,
+  },
+  setB: {
+    easy: BEasy,
+    hard: BHard,
+  },
+  setC: {
+    easy: CEasy,
+    hard: CHard,
+  }
+}
 
-  '...x..' +
-  'x....e' +
-  '....xx' +
-  '.x..sx' +
-  '......' +
-  '.x....',
-
-  '..x...' +
-  '......' +
-  '.xs.x.' +
-  '....e.' +
-  '....x.' +
-  '..x...',
-
-  '......' +
-  '.s.bxx' +
-  'xx...x' +
-  '.....e' +
-  '...xx.' +
-  '.x.xx.',
-
-  '....xe' +
-  '.xb.g.' +
-  '..s..x' +
-  '...s..' +
-  'xg.b..' +
-  'e.xbx.',
-
-  'x...x.x.' +
-  'e.......' +
-  'x.s.....' +
-  '....x...' +
-  '..x.....' +
-  '.x...x.x' +
-  '...x....' +
-  '.x.....x',
-
-
+const endLevel: ReadableLevel =
   '.............' +
   '.xxx.x.x.xxx.' +
   '..x..x.x.x...' +
@@ -61,9 +37,44 @@ const readableLevels: ReadableLevel[] = [
   '.xx..x.x.x.x.' +
   '.x...x.x.x.x.' +
   '.xxx.x.x.xx..' +
-  '.............'
+  '.............';
 
-]
+const loadLevelsByConfig = (config: LevelConfig, additionalLevels: ReadableLevel[]): ReadableLevel[] => {
+  const levels: ReadableLevel[] = [];
+  config.levelSets?.forEach((levelSet) => {
+    switch (levelSet) {
+      case "A":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setA));
+        break
+      case "B":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setB));
+        break
+      case "C":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setC));
+        break
+    }
+  })
+  levels.push(...additionalLevels)
+  levels.push(endLevel);
+  return levels;
+}
+
+const loadLevelSetByConfig = (config: LevelConfig, levelSet: {easy: ReadableLevel[], hard: ReadableLevel[]}): ReadableLevel[] => {
+  switch (config.levelFilter) {
+    case "all":
+      return levelSet.easy.concat(levelSet.hard);
+    case "onlyEasy":
+      return levelSet.easy;
+    case "onlyHard":
+      return levelSet.hard;
+    case "short":
+      return [levelSet.easy[0], levelSet.easy[1], levelSet.hard[0], levelSet.hard[1]];
+    case "onlyCustom":
+      return [];
+    default:
+      return [];
+  }
+}
 
 const transformLevels = (rLevels: ReadableLevel[]): Level[] => {
   return rLevels.map(rLevel => transformLevel(rLevel));
@@ -111,53 +122,8 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
   }
 }
 
-export const levels = transformLevels(readableLevels);
-
-// export const levels: Level[] = [
-//   {
-//     boardSize: 6,
-//     elements: [
-//       {type: "Start", posX: 2, posY: 3},
-//       {type: "Wall", posX: 2, posY: 0},
-//       {type: "Wall", posX: 0, posY: 3},
-//       {type: "Wall", posX: 2, posY: 5},
-//       {type: "Wall", posX: 5, posY: 4},
-//       {type: "End", posX: 3, posY: 2},
-//     ]
-//   }, {
-//     boardSize: 6,
-//     elements: [
-//       {type: "Start", posX: 4, posY: 3},
-//       {type: "Wall", posX: 3, posY: 0},
-//       {type: "Wall", posX: 4, posY: 2},
-//       {type: "Wall", posX: 5, posY: 2},
-//       {type: "Wall", posX: 5, posY: 3},
-//       {type: "Wall", posX: 0, posY: 1},
-//       {type: "Wall", posX: 1, posY: 3},
-//       {type: "Wall", posX: 1, posY: 5},
-//       {type: "End", posX: 5, posY: 1},
-//     ]
-//   }, {
-//     boardSize: 7,
-//     elements: [
-//       {type: "Start", posX: 0, posY: 0},
-//       {type: "Wall", posX: 1, posY: 1},
-//       {type: "Wall", posX: 2, posY: 1},
-//       {type: "Wall", posX: 3, posY: 1},
-//       {type: "Wall", posX: 0, posY: 1},
-//       {type: "End", posX: 0, posY: 2, state: "Default"},
-//       {type: "Box", posX: 0, posY: 4},
-//       {type: "Box", posX: 1, posY: 4},
-//       {type: "GreenField", posX: 4, posY: 4, state: "Default"},
-//     ]
-//   }, {
-//     boardSize: 5,
-//     elements: [
-//       {type: "Start", posX: 0, posY: 0},
-//       {type: "GreenField", posX: 1, posY: 0, state: "Default"},
-//       {type: "GreenField", posX: 2, posY: 0, state: "Default"},
-//       {type: "GreenField", posX: 3, posY: 0, state: "Default"},
-//       {type: "End", posX: 4, posY: 4, state: "Default"},
-//     ]
-//   }
-// ];
+export const prepareLevels = (config: LevelConfig, customLevels: ReadableLevel[]) => {
+  const readableLevels = loadLevelsByConfig(config, customLevels);
+  console.log({readableLevels})
+  return transformLevels(readableLevels);
+}

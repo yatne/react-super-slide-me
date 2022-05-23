@@ -2,13 +2,15 @@ import * as React from 'react';
 import {GameBoard} from "./GameBoard";
 import {useEffect} from "react";
 import {gameSlice} from "../store/gameReducer";
-import {levels} from "../store/levels";
+import {prepareLevels, ReadableLevel} from "../store/levels";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../SuperSlideMe";
+import {AppDispatch, LevelConfig, RootState} from "../SuperSlideMe";
 import {Controls} from "./Controls";
 
 interface Props {
   onLastLevelReached: (() => unknown) | undefined;
+  levelConfig: LevelConfig,
+  customLevels: ReadableLevel[],
 }
 
 export const Game = (props : Props) => {
@@ -18,7 +20,10 @@ export const Game = (props : Props) => {
   const levelCount = useSelector((state: RootState) => state.game.levels.length)
 
   useEffect(() => {
-    dispatch(gameSlice.actions.loadLevels(levels));
+
+    console.log(props.levelConfig, props.customLevels, prepareLevels(props.levelConfig, props.customLevels))
+
+    dispatch(gameSlice.actions.loadLevels(prepareLevels(props.levelConfig, props.customLevels)));
     dispatch(gameSlice.actions.startLevel(maxLevel));
   }, [])
 

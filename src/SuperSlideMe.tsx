@@ -6,11 +6,21 @@ import { configureStore} from "@reduxjs/toolkit";
 import gameReducer from "./store/gameReducer";
 import {CurrentElement, Element} from "./components/StyledElements";
 import {Game} from "./components/Game";
+import {ReadableLevel} from "./store/levels";
+
+export interface LevelConfig {
+  levelSets?: levelSet[],
+  levelFilter?: levelFilter,
+}
+
+export type levelSet = "A" | "B" | "C";
+export type levelFilter = "all" | "onlyEasy" | "onlyHard" | "short" | "onlyCustom";
 
 interface GameProps {
-  levels: Level[],
   width: string;
   onLastLevelReached?: () => unknown,
+  levelConfig?: LevelConfig,
+  customLevels?: ReadableLevel[],
 }
 
 export interface Level {
@@ -33,13 +43,21 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
-export const SuperSlideMe = (props: GameProps) => {
+const defaultLevelConfig: LevelConfig = {
+  levelSets: ["A", "B", "C"],
+  levelFilter: "all",
+}
 
+export const SuperSlideMe = ({width, onLastLevelReached, customLevels, levelConfig}: GameProps) => {
   return (
     <div>
       <Provider store={store}>
-        <ThemeProvider theme={theme({width: props.width})}>
-          <Game onLastLevelReached={props.onLastLevelReached}/>
+        <ThemeProvider theme={theme({width: width})}>
+          <Game
+            onLastLevelReached={onLastLevelReached}
+            levelConfig={levelConfig || defaultLevelConfig}
+            customLevels={customLevels || []}
+          />
         </ThemeProvider>
       </Provider>
     </div>
