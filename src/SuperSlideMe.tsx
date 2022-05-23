@@ -9,8 +9,8 @@ import {Game} from "./components/Game";
 
 interface GameProps {
   levels: Level[],
-  gameName: string,
   width: string;
+  onLastLevelReached?: () => unknown,
 }
 
 export interface Level {
@@ -39,7 +39,7 @@ export const SuperSlideMe = (props: GameProps) => {
     <div>
       <Provider store={store}>
         <ThemeProvider theme={theme({width: props.width})}>
-          <Game name={props.gameName} />
+          <Game onLastLevelReached={props.onLastLevelReached}/>
         </ThemeProvider>
       </Provider>
     </div>

@@ -7,10 +7,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../SuperSlideMe";
 import {Controls} from "./Controls";
 
-export const Game = (props: {name: string}) => {
+interface Props {
+  onLastLevelReached: (() => unknown) | undefined;
+}
+
+export const Game = (props : Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
   const maxLevel = useSelector((state: RootState) => state.game.unlockedLevel)
+  const levelCount = useSelector((state: RootState) => state.game.levels.length)
 
   useEffect(() => {
     dispatch(gameSlice.actions.loadLevels(levels));
@@ -19,15 +24,19 @@ export const Game = (props: {name: string}) => {
 
   const onLevelFinished = () => {
     setTimeout(() => {
-      if (currentLevel !== null)
-      dispatch(gameSlice.actions.startLevel(currentLevel?.number + 1))
+      if (currentLevel !== null) {
+        dispatch(gameSlice.actions.startLevel(currentLevel?.number + 1))
+        console.log({currentLevel, levelCount})
+        if (currentLevel?.number === levelCount - 2 && props.onLastLevelReached) {
+          props.onLastLevelReached();
+        }
+      }
     }, 1000)
   }
 
   return (
     <div>
-      {props.name}
-      <GameBoard onLevelFinish={onLevelFinished}/>
+      <GameBoard onLevelFinish={onLevelFinished} onLastLevelReached={props.onLastLevelReached}/>
       <Controls />
     </div>
   )

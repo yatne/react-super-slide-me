@@ -39,13 +39,6 @@ const readableLevels: ReadableLevel[] = [
   'xg.b..' +
   'e.xbx.',
 
-  '....xe' +
-  '.xb.g.' +
-  '..s..x' +
-  '...s..' +
-  'xg.b..' +
-  'e.xbx.',
-
   'x...x.x.' +
   'e.......' +
   'x.s.....' +
@@ -54,6 +47,22 @@ const readableLevels: ReadableLevel[] = [
   '.x...x.x' +
   '...x....' +
   '.x.....x',
+
+
+  '.............' +
+  '.xxx.x.x.xxx.' +
+  '..x..x.x.x...' +
+  '..x..xxx.xx..' +
+  '..x..x.x.x...' +
+  '..x..x.x.xxx.' +
+  '......s......' +
+  '.xxx.xxx.xx..' +
+  '.x...x.x.x.x.' +
+  '.xx..x.x.x.x.' +
+  '.x...x.x.x.x.' +
+  '.xxx.x.x.xx..' +
+  '.............'
+
 ]
 
 const transformLevels = (rLevels: ReadableLevel[]): Level[] => {

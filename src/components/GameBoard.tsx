@@ -20,6 +20,7 @@ interface ContainerProps {
 
 interface Props {
   onLevelFinish: () => void;
+  onLastLevelReached: (() => unknown) | undefined;
 }
 
 const BoardContainer = styled.div<ContainerProps>`
@@ -99,9 +100,12 @@ export const GameBoard = (props : Props) => {
     }
   }
 
-  if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" )) {
-    props.onLevelFinish()
-  }
+  useEffect(() => {
+    if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" )) {
+      props.onLevelFinish();
+    }
+  }, [currentLevel])
+
 
   return (
     <BoardContainer>
