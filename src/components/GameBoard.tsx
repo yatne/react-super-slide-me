@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import BoardTile from "./BoardTile";
 import {
   BoxElement,
-  Element,
   EndElement, GreenFieldElement,
   StartElement, VoidElement,
   WallElement
@@ -13,6 +12,7 @@ import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
 import {useEffect, useState} from "react";
 import {longestMove} from "../store/timeLogic";
+import {useSwipeable} from "react-swipeable";
 
 interface ContainerProps {
   theme: any;
@@ -41,6 +41,13 @@ export const GameBoard = (props : Props) => {
   const fields = [];
   const [blocked, setBlocked] = useState(false);
   const [blockStart, setBlockStart] = useState(false);
+  const handlers = useSwipeable({
+    onSwipedLeft: () => moveLeft(),
+    onSwipedRight: () => moveRight(),
+    onSwipedUp: () => moveUp(),
+    onSwipedDown: () => moveDown(),
+    trackMouse: true,
+  });
 
   const blockedRef = React.useRef(blocked);
   const setBlock = (block: boolean) => {
@@ -62,27 +69,41 @@ export const GameBoard = (props : Props) => {
     startBlockade(moveTime);
   }
 
+  const moveLeft = () => {
+    dispatch(gameSlice.actions.moveLeft());
+    setBlockStart(true);
+  }
+
+  const moveRight = () => {
+    dispatch(gameSlice.actions.moveRight());
+    setBlockStart(true);
+  }
+
+  const moveUp = () => {
+    dispatch(gameSlice.actions.moveUp());
+    setBlockStart(true);
+  }
+
+  const moveDown = () => {
+    dispatch(gameSlice.actions.moveDown());
+    setBlockStart(true);
+  }
+
   useEffect(() => {
     const arrowEventListenerFunction = (e: KeyboardEvent) => {
       if (!blockedRef.current) {
         switch (e.key) {
           case "ArrowUp":
-            e.preventDefault();
-            dispatch(gameSlice.actions.moveUp());
-            setBlockStart(true);
+            moveUp();
             break;
           case "ArrowDown":
-            e.preventDefault();
-            dispatch(gameSlice.actions.moveDown());
-            setBlockStart(true);
+            moveDown();
             break;
           case "ArrowLeft":
-            dispatch(gameSlice.actions.moveLeft());
-            setBlockStart(true);
+            moveLeft();
             break;
           case "ArrowRight":
-            dispatch(gameSlice.actions.moveRight());
-            setBlockStart(true);
+            moveRight();
             break;
         }
       }
@@ -108,7 +129,7 @@ export const GameBoard = (props : Props) => {
 
 
   return (
-    <BoardContainer>
+    <BoardContainer {...handlers}>
       {currentLevel ? (
         <>
           {fields.map((fieldNr) =>
