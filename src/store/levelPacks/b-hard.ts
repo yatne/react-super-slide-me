@@ -1,14 +1,24 @@
 import {ReadableLevel} from "../levels";
 
 export const BHard: ReadableLevel[] = [
+  'e...x....' +
+  '.ss.x..e.' +
+  '.ss......' +
+  '....x....' +
+  'xx.xxx.xx' +
+  '....xe...' +
+  '......b..' +
+  '.e..x..b.' +
+  '....x....',
 
-  '.x.....' +
-  'x..x...' +
-  '..b.x..' +
-  's.x.x..' +
-  'x....e.' +
-  '....x..' +
-  '..xx...',
+  'xxsx...x' +
+  'xx.xxxxx' +
+  'x...bx.x' +
+  'xxxxbbxx' +
+  'x.xxbx.x' +
+  'x..xbx.x' +
+  'x.x.bx.x' +
+  'x..xex.x',
 
   '.xx....' +
   '....x..' +
@@ -17,7 +27,6 @@ export const BHard: ReadableLevel[] = [
   'x..x...' +
   's..xb..' +
   'x...x..',
-
 
   '..x..x.x' +
   'b.......' +
@@ -35,7 +44,6 @@ export const BHard: ReadableLevel[] = [
   '....xxx' +
   '.e...xs' +
   '.x.....',
-
 
   '.x.x...x' +
   '.s...xx.' +
@@ -62,5 +70,4 @@ export const BHard: ReadableLevel[] = [
   's...x.x' +
   '..e.x..' +
   '....x.s',
-
 ]

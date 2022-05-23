@@ -1,6 +1,14 @@
 import {ReadableLevel} from "../levels";
 
 export const CHard: ReadableLevel[] = [
+  '......x' +
+  '..x..s.' +
+  '...g.x.' +
+  '..eee..' +
+  '..geg.x' +
+  'gs.gg.s' +
+  'sg..x..',
+
   '.s......' +
   '.g.s.g..' +
   '...x..e.' +

@@ -10,7 +10,7 @@ import {
 import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {longestMove} from "../store/timeLogic";
 import {useSwipeable} from "react-swipeable";
 
@@ -39,7 +39,17 @@ export const GameBoard = (props : Props) => {
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
   const currentLevelNumber = useSelector((state: RootState) => state.game.currentLevelNumber)
   const dispatch = useDispatch<AppDispatch>()
-  const fields = [];
+  const fields = useMemo(() => {
+    const fs = []
+    if (currentLevel !== null) {
+      for (let i = 0; i < currentLevel.boardSize * currentLevel.boardSize; i++) {
+        fs.push(i);
+      }
+    }
+    return fs;
+  }, [currentLevel]);
+
+
   const [blocked, setBlocked] = useState(false);
   const [blockStart, setBlockStart] = useState(false);
   const handlers = useSwipeable({
@@ -120,12 +130,6 @@ export const GameBoard = (props : Props) => {
       document.removeEventListener('keydown', arrowEventListenerFunction)
     }
   }, []);
-
-  if (currentLevel !== null) {
-    for (let i = 0; i < currentLevel.boardSize * currentLevel.boardSize; i++) {
-      fields.push(i);
-    }
-  }
 
   useEffect(() => {
     if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" )) {

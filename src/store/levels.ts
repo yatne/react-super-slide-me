@@ -81,7 +81,7 @@ const loadLevelSetByConfig = (config: LevelConfig, levelSet: {easy: ReadableLeve
     case "onlyCustom":
       return [];
     default:
-      return [];
+      return levelSet.easy.concat(levelSet.hard);
   }
 }
 

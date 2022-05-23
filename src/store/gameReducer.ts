@@ -8,7 +8,6 @@ const save = (levelNumber: number) => {
 }
 
 const load = (): number => {
-  return 0
   return parseInt(localStorage.getItem("unlockedLevel") || '0');
 }
 // Define a type for the slice state

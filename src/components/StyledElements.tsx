@@ -40,6 +40,7 @@ export const WallElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px #252525;
   border-radius: 5%;
   background-color: #484848;
+  z-index: 300;
 `
 
 export const BoxElement = styled(StyledElement)`

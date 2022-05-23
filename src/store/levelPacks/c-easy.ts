@@ -1,6 +1,13 @@
 import {ReadableLevel} from "../levels";
 
 export const CEasy: ReadableLevel[] = [
+  's.g...' +
+  'xxx.xx' +
+  '....x.' +
+  '......' +
+  '.e....' +
+  '...gb.',
+
   '..xex.' +
   '.g....' +
   '.s.ggg' +
@@ -48,7 +55,6 @@ export const CEasy: ReadableLevel[] = [
   '....gb.' +
   'e..x...',
 
-
   'x...x...' +
   'sxe.....' +
   '....x.g.' +
@@ -57,12 +63,4 @@ export const CEasy: ReadableLevel[] = [
   '........' +
   '..gxgxgg' +
   '...g.x..',
-
-  '......x' +
-  '..x..s.' +
-  '...g.x.' +
-  '..eee..' +
-  '..geg.x' +
-  'gs.gg.s' +
-  'sg..x..',
 ]
