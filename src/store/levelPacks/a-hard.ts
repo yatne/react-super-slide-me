@@ -50,7 +50,4 @@ export const AHard: ReadableLevel[] = [
   '..s....' +
   '..e....' +
   '.......',
-
-  's.' +
-  '.e',
 ]

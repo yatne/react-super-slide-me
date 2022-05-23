@@ -63,6 +63,4 @@ export const BHard: ReadableLevel[] = [
   '..e.x..' +
   '....x.s',
 
-  's.' +
-  '.e',
 ]

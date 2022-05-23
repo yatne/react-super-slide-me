@@ -50,6 +50,10 @@ export const AEasy: ReadableLevel[] = [
   '....x.' +
   '..x...',
 
-  's.' +
-  '.e',
+  's...ex' +
+  's.xxx.' +
+  '......' +
+  '......' +
+  'x..x.x' +
+  '...x.e',
 ]

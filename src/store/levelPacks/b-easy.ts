@@ -25,8 +25,4 @@ export const BEasy: ReadableLevel[] = [
   'x.x.bx.x' +
   'x..xex.x',
 
-  's..' +
-  '...' +
-  '..e',
-
 ]
