@@ -11,6 +11,7 @@ interface Props {
   onLastLevelReached: (() => unknown) | undefined;
   levelConfig: LevelConfig,
   customLevels: ReadableLevel[],
+  gameId: string,
 }
 
 export const Game = (props : Props) => {

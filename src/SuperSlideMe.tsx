@@ -7,6 +7,7 @@ import gameReducer from "./store/gameReducer";
 import {CurrentElement, Element} from "./components/StyledElements";
 import {Game} from "./components/Game";
 import {ReadableLevel} from "./store/levels";
+import {useEffect, useMemo, useState} from "react";
 
 export interface LevelConfig {
   levelSets?: levelSet[],
@@ -17,10 +18,11 @@ export type levelSet = "A" | "B" | "C" | "X";
 export type levelFilter = "all" | "onlyEasy" | "onlyHard" | "short" | "onlyCustom";
 
 interface GameProps {
-  width: string;
+  width: number;
   onLastLevelReached?: () => unknown,
   levelConfig?: LevelConfig,
   customLevels?: ReadableLevel[],
+  id?: string,
 }
 
 export interface Level {
@@ -48,12 +50,47 @@ const defaultLevelConfig: LevelConfig = {
   levelFilter: "all",
 }
 
-export const SuperSlideMe = ({width, onLastLevelReached, customLevels, levelConfig}: GameProps) => {
+const createSomeId = (id: string | undefined, levelConfig: LevelConfig | undefined, customLevels: string[] | undefined): string => {
+  if (id) {
+    return id;
+  }
+  const levelSetsPart = levelConfig?.levelSets ? levelConfig.levelSets.join("-") : "all-sets";
+  const levelFilterPart = levelConfig?.levelFilter ? levelConfig.levelFilter : "all-levels";
+  const customLevelsPart = customLevels? customLevels?.join("-") : "no-custom-levels";
+
+  return `${levelSetsPart}-${levelFilterPart}-${customLevelsPart}`;
+}
+
+export const SuperSlideMe = ({width, onLastLevelReached, customLevels, levelConfig, id}: GameProps) => {
+  const gameId = useMemo(() => createSomeId(id, levelConfig, customLevels), [id, levelConfig, customLevels]);
+  const [gameWidth, setGameWidth] = useState(width);
+  const [gameBoardMargin, setGameBoardMargin] = useState(Math.floor(width/25));
+  const [buttonFontSize, setButtonFontSize] = useState(1);
+
+  useEffect(() => {
+    setCurrentWidth();
+    addEventListener('resize', setCurrentWidth);
+    return () => removeEventListener("resize", setCurrentWidth);
+  }, [])
+
+  const setCurrentWidth = () => {
+    const parentNodeWidth = document?.getElementById(gameId)?.parentElement?.clientWidth;
+    const calculatedGameWidth = width || parentNodeWidth || 400;
+    setGameWidth(calculatedGameWidth);
+    setGameBoardMargin(Math.floor(calculatedGameWidth/25));
+    setButtonFontSize(Math.floor(calculatedGameWidth/35));
+  }
+
   return (
-    <div>
+    <div id={gameId}>
       <Provider store={store}>
-        <ThemeProvider theme={theme({width: width})}>
+        <ThemeProvider theme={theme({
+          width: `${gameWidth - 2*gameBoardMargin}px`,
+          gameBoardMargin: `${gameBoardMargin}px`,
+          buttonFontSize: `${buttonFontSize}px`,
+        })}>
           <Game
+            gameId={gameId}
             onLastLevelReached={onLastLevelReached}
             levelConfig={levelConfig || defaultLevelConfig}
             customLevels={customLevels || []}

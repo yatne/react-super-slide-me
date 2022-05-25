@@ -8,12 +8,12 @@ interface ContainerProps {
   theme: any;
 }
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<ContainerProps>`
   box-shadow: 0 0 5px 1px #818181;
   background-color: #f6f6f6;
   height: 2rem;
   padding: 0 1rem;
-  font-size: 1rem;
+  font-size: ${props => props.theme.buttonFontSize};
   color: #2e57dc;
   width: 100%;
   

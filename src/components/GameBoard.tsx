@@ -145,9 +145,10 @@ export const GameBoard = (props : Props) => {
           {fields.map((fieldNr) =>
             <BoardTile key={fieldNr} boardSize={currentLevel.boardSize}/>
           )}
-          {currentLevel.elements.map(element => {
+          {currentLevel.elements.map((element, index)=> {
             const eleProps = {
               ...element,
+              key: index,
               boardSize: currentLevel.boardSize,
             }
             switch (element.type) {
