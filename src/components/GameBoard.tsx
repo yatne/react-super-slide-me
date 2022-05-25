@@ -58,6 +58,7 @@ export const GameBoard = (props : Props) => {
     onSwipedUp: () => moveUp(),
     onSwipedDown: () => moveDown(),
     trackMouse: true,
+    preventScrollOnSwipe: true,
   });
 
   const blockedRef = React.useRef(blocked);

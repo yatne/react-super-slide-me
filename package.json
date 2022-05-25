@@ -1,6 +1,6 @@
 {
   "name": "react-super-slide-me",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "super slide me game as a react component",
   "main": "lib/index.js",
   "scripts": {
