@@ -3,7 +3,7 @@ import {CurrentElement, Element} from "../components/StyledElements";
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
 const elementMovable = (element: Element): boolean => {
-  return (["Start", "Box", "AltStart", "BlueBox"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
+  return (["Start", "Box", "AltStart", "BlueBox", "Crusher"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
 };
 
 const elementsCanInteract = (ele1: Element, ele2: Element) => {
@@ -16,13 +16,16 @@ const elementsCanInteract = (ele1: Element, ele2: Element) => {
   if (["Start", "AltStart", "Box"].includes(ele1.type) && [ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
     return true;
   }
+  if ((ele1.type === "Crusher" && ele2.type === "OrangeWall") || (ele2.type === "OrangeWall" && ele2.state === "Void")) {
+    return true;
+  }
   if (ele2.type === "BluePath") {
     return true;
   }
-  if (["Start", "AltStart", "Box"].includes(ele1.type) && ele2.type === "RedField"){
+  if (["Start", "AltStart", "Box", "Crusher"].includes(ele1.type) && ele2.type === "RedField"){
     return true;
   }
-  if (["Start", "AltStart", "Box"].includes(ele1.type) && ele2.state === "Void") {
+  if (["Start", "AltStart", "Box", "Crusher"].includes(ele1.type) && ele2.state === "Void") {
     return true;
   }
   return false;
@@ -50,6 +53,11 @@ const interact = (ele1: CurrentElement, ele2: CurrentElement | undefined) => {
   if (ele2.type === "RedField" && ele2.state !== "Triggered") {
     ele1.state = "Void";
     ele2.state = "Triggered";
+    ele2.previousPosX = ele1.previousPosX;
+    ele2.previousPosY = ele1.previousPosY;
+  }
+  if (ele1.type === "Crusher" && ele2.type === "OrangeWall") {
+    ele2.state = "Void";
     ele2.previousPosX = ele1.previousPosX;
     ele2.previousPosY = ele1.previousPosY;
   }

@@ -4,8 +4,8 @@ import BoardTile from "./BoardTile";
 import {
   AltEndElement,
   AltStartElement, BlueBoxElement, BluePathElement,
-  BoxElement,
-  EndElement, GreenFieldElement, RedFieldElement,
+  BoxElement, CrusherElement,
+  EndElement, GreenFieldElement, OrangeWallElement, RedFieldElement,
   StartElement, VoidElement,
   WallElement
 } from "./StyledElements";
@@ -177,6 +177,10 @@ export const GameBoard = (props : Props) => {
                 return <BlueBoxElement {...eleProps} />
               case "BluePath":
                 return <BluePathElement {...eleProps} />
+              case "Crusher":
+                return <CrusherElement {...eleProps} />
+              case "OrangeWall":
+                return <OrangeWallElement {...eleProps} />
             }
           })}
         </>

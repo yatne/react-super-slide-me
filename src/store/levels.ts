@@ -101,7 +101,7 @@ const transformLevel = (rLevel: ReadableLevel): Level => {
   for (let i = 0; i < rLevel.length; i++) {
     if (rLevel[i] !== '.') {
       elements.push(createElement(rLevel[i], i, boardSize));
-      if (rLevel[i] === "o") {
+      if (rLevel[i] === "B") {
         elements.push(createElement("p", i, boardSize));
       }
     }
@@ -139,11 +139,17 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
     case 'E':
       type = "AltEnd";
       break;
-    case 'o':
+    case 'B':
       type = "BlueBox";
       break;
     case "p":
       type = "BluePath";
+      break;
+    case 'o':
+      type = "OrangeWall";
+      break;
+    case "c":
+      type = "Crusher";
       break;
     default:
       throw new Error(`Error in one of the levels: unknown element: ${elementChar}.`)

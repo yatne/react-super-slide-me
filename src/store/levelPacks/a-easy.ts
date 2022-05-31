@@ -5,15 +5,15 @@ export const AEasy: ReadableLevel[] = [
   'rrprrr' +
   '.ppbbr' +
   'x.p.bb' +
-  's.o..b' +
-  'S.o.E.',
+  's.B..b' +
+  'S.B.E.',
 
   'xxxxxx' +
-  'xxx..x' +
-  'xs...x' +
-  'xxx.xx' +
-  'xxx.xx' +
-  'xxxexx',
+  'x....x' +
+  '.s...x' +
+  '...e..' +
+  'o.....' +
+  'c.....',
 
   '..x...' +
   '......' +

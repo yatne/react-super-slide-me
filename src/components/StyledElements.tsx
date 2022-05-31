@@ -3,7 +3,7 @@ import {moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = CurrentElement & { boardSize: number };
 
-export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField" | "RedField" | "AltStart" | "AltEnd" | "BlueBox" | "BluePath";
+export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField" | "RedField" | "AltStart" | "AltEnd" | "BlueBox" | "BluePath" | "Crusher" | "OrangeWall";
 type ElementState = "Triggered" | "Default" | "Void";
 
 export interface Element {
@@ -25,7 +25,7 @@ const StyledElement = styled.div<ElementProps>`
   top: calc(${props => props.theme.gameBoardMargin} + ${props => props.posY} * ${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   left: calc(${props => props.theme.gameBoardMargin} + ${props => props.posX} * ${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   width: calc(${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
-  padding-bottom: calc(${props => props.theme.width ? props.theme.width : '400px'} / ${props => props.boardSize});
+  height: calc(${props => props.theme.width ? props.theme.width : '400xp'} / ${props => props.boardSize});
   transition: ${props => moveToMilliseconds(props, props.boardSize)}ms linear;
 `
 
@@ -98,6 +98,22 @@ export const BluePathElement = styled(StyledElement)<ElementProps>`
   box-shadow: inset 0 0 5px 1px #709696;
   background-color: #11ddff;
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
+`
+
+export const OrangeWallElement = styled(StyledElement)`
+  box-shadow: inset 0 0 5px 1px ${props => props.state === "Void" ? "#818181" : "#252525" };
+  background-color: ${props => props.state === "Void" ? "rgba(255,237,200,0.96)" : "#f8c503"};
+  border-radius: 5%;
+  z-index: ${props => props.state === "Void" ? "200" : "300"};
+`
+
+export const CrusherElement = styled(StyledElement)`
+  box-shadow: inset 0 0 5px 1px #252525;
+  background-color: #484848;
+  border-radius: 50%;
+  border: 5px double #f8c503;
+  box-sizing: border-box;
+  z-index: 500;
 `
 
 export const VoidElement = styled(StyledElement)`
