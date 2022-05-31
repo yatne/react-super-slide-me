@@ -46,6 +46,9 @@ const endLevel: ReadableLevel =
 
 const loadLevelsByConfig = (config: LevelConfig, additionalLevels: ReadableLevel[]): ReadableLevel[] => {
   const levels: ReadableLevel[] = [];
+  if (config.levelSets === undefined) {
+    config.levelSets = ["A", "B", "C", "X"];
+  }
   config.levelSets?.forEach((levelSet) => {
     switch (levelSet) {
       case "A":

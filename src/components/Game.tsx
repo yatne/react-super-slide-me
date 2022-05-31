@@ -6,6 +6,7 @@ import {prepareLevels, ReadableLevel} from "../store/levels";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, LevelConfig, RootState} from "../SuperSlideMe";
 import {Controls} from "./Controls";
+import {LevelCounter} from "./LevelCounter";
 
 interface Props {
   onLastLevelReached: (() => unknown) | undefined;
@@ -38,6 +39,7 @@ export const Game = (props : Props) => {
 
   return (
     <div>
+      <LevelCounter />
       <GameBoard onLevelFinish={onLevelFinished} onLastLevelReached={props.onLastLevelReached}/>
       <Controls />
     </div>
