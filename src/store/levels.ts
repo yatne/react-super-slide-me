@@ -127,6 +127,9 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
     case 'g':
       type = "GreenField";
       break;
+    case 'r':
+      type = "RedField";
+      break
     default:
       throw new Error(`Error in one of the levels: unknown element: ${elementChar}.`)
   }

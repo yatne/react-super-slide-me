@@ -3,8 +3,8 @@ import {moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = CurrentElement & { boardSize: number };
 
-export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField";
-type ElementState = "Triggered" | "Default";
+export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField" | "RedField";
+type ElementState = "Triggered" | "Default" | "Void";
 
 export interface Element {
   type: ElementType,
@@ -33,7 +33,7 @@ export const StartElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px #001249;
   border-radius: 50%;
   background-color: #2e57dc;
-  z-index: 300;
+  z-index: ${props => props.state === "Void" ? '200' : '300'};
 `
 
 export const WallElement = styled(StyledElement)`
@@ -62,6 +62,13 @@ export const GreenFieldElement = styled(StyledElement)<ElementProps>`
   background-color: ${props => props.state === "Triggered" ? '#2e7200' : '#ccffc5'};
   border-radius: ${props => props.state === "Triggered" ? '5%' : '0'};
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
+`
+
+export const RedFieldElement = styled(StyledElement)<ElementProps>`
+  box-shadow: inset 0 0 5px 1px #818181;
+  background-color: ${props => props.state === "Triggered" ? '#ffc5c5' : 'rgba(250,0,0,0.75)'};
+  transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
+  z-index: ${props => props.state === "Triggered" ? '250' : '100'};
 `
 
 export const VoidElement = styled(StyledElement)`

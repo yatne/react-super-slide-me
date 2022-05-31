@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BoardTile from "./BoardTile";
 import {
   BoxElement,
-  EndElement, GreenFieldElement,
+  EndElement, GreenFieldElement, RedFieldElement,
   StartElement, VoidElement,
   WallElement
 } from "./StyledElements";
@@ -133,7 +133,8 @@ export const GameBoard = (props : Props) => {
   }, []);
 
   useEffect(() => {
-    if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" )) {
+    if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" ) &&
+    !currentLevel?.elements.find(element => element.type === "End" && element.state !== "Triggered")) {
       props.onLevelFinish();
     }
   }, [currentLevel])
@@ -165,6 +166,8 @@ export const GameBoard = (props : Props) => {
                 return <VoidElement {...eleProps} />
               case "GreenField":
                 return <GreenFieldElement {...eleProps} />
+              case "RedField":
+                return <RedFieldElement {...eleProps} />
             }
           })}
         </>
