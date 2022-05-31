@@ -130,6 +130,12 @@ const createElement = (elementChar: string, index: number, boardSize: number): E
     case 'r':
       type = "RedField";
       break
+    case 'S':
+      type = "AltStart";
+      break;
+    case 'E':
+      type = "AltEnd";
+      break;
     default:
       throw new Error(`Error in one of the levels: unknown element: ${elementChar}.`)
   }

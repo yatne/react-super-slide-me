@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import BoardTile from "./BoardTile";
 import {
+  AltEndElement,
+  AltStartElement,
   BoxElement,
   EndElement, GreenFieldElement, RedFieldElement,
   StartElement, VoidElement,
@@ -133,8 +135,7 @@ export const GameBoard = (props : Props) => {
   }, []);
 
   useEffect(() => {
-    if (!currentLevel?.elements.find(element => element.type === "Start" && element.state !== "Triggered" ) &&
-    !currentLevel?.elements.find(element => element.type === "End" && element.state !== "Triggered")) {
+    if (!currentLevel?.elements.find(element => ["Start", "AltStart"].includes(element.type) && element.state !== "Triggered")) {
       props.onLevelFinish();
     }
   }, [currentLevel])
@@ -168,6 +169,10 @@ export const GameBoard = (props : Props) => {
                 return <GreenFieldElement {...eleProps} />
               case "RedField":
                 return <RedFieldElement {...eleProps} />
+              case "AltStart":
+                return <AltStartElement {...eleProps} />
+              case "AltEnd":
+                return <AltEndElement {...eleProps} />
             }
           })}
         </>

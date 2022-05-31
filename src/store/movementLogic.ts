@@ -3,11 +3,14 @@ import {CurrentElement, Element} from "../components/StyledElements";
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
 const elementMovable = (element: Element): boolean => {
-  return (["Start", "Box"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
+  return (["Start", "Box", "AltStart"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
 };
 
 const elementsCanInteract = (ele1: Element, ele2: Element) => {
   if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End" && ele.state !== "Triggered")) {
+    return true;
+  }
+  if ([ele1, ele2].find(ele => ele.type === "AltStart") && [ele1, ele2].find(ele => ele.type === "AltEnd" && ele.state !== "Triggered")) {
     return true;
   }
   if ([ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
@@ -25,6 +28,12 @@ const elementsCanInteract = (ele1: Element, ele2: Element) => {
 const interact = (ele1: CurrentElement, ele2: CurrentElement | undefined) => {
   if (ele2 === undefined) return;
   if (ele1.type === "Start" && ele2.type === "End") {
+    ele1.state = "Triggered";
+    ele2.state = "Triggered";
+    ele2.previousPosX = ele1.previousPosX;
+    ele2.previousPosY = ele1.previousPosY;
+  }
+  if (ele1.type === "AltStart" && ele2.type === "AltEnd") {
     ele1.state = "Triggered";
     ele2.state = "Triggered";
     ele2.previousPosX = ele1.previousPosX;
