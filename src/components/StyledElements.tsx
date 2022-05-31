@@ -3,7 +3,7 @@ import {moveToMilliseconds} from "../store/timeLogic";
 
 type ElementProps = CurrentElement & { boardSize: number };
 
-export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField" | "RedField" | "AltStart" | "AltEnd";
+export type ElementType =  "Start" | "End" | "Wall" | "Box" | "Void" | "GreenField" | "RedField" | "AltStart" | "AltEnd" | "BlueBox" | "BluePath";
 type ElementState = "Triggered" | "Default" | "Void";
 
 export interface Element {
@@ -85,6 +85,19 @@ export const RedFieldElement = styled(StyledElement)<ElementProps>`
   background-color: ${props => props.state === "Triggered" ? '#ffc5c5' : 'rgba(250,0,0,0.75)'};
   transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
   z-index: ${props => props.state === "Triggered" ? '250' : '100'};
+`
+
+export const BlueBoxElement = styled(StyledElement)`
+  box-shadow: inset 0 0 5px 1px #252525;
+  border-radius: 22%;
+  background-color: #06525e;
+  z-index: ${props => props.state === "Void" ? '200' : '300'};
+`
+
+export const BluePathElement = styled(StyledElement)<ElementProps>`
+  box-shadow: inset 0 0 5px 1px #709696;
+  background-color: #11ddff;
+  transition-delay: ${props => moveToMilliseconds(props, props.boardSize)}ms;
 `
 
 export const VoidElement = styled(StyledElement)`

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BoardTile from "./BoardTile";
 import {
   AltEndElement,
-  AltStartElement,
+  AltStartElement, BlueBoxElement, BluePathElement,
   BoxElement,
   EndElement, GreenFieldElement, RedFieldElement,
   StartElement, VoidElement,
@@ -173,6 +173,10 @@ export const GameBoard = (props : Props) => {
                 return <AltStartElement {...eleProps} />
               case "AltEnd":
                 return <AltEndElement {...eleProps} />
+              case "BlueBox":
+                return <BlueBoxElement {...eleProps} />
+              case "BluePath":
+                return <BluePathElement {...eleProps} />
             }
           })}
         </>

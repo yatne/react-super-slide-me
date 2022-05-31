@@ -3,23 +3,26 @@ import {CurrentElement, Element} from "../components/StyledElements";
 export type Direction = "Up" | "Down" | "Left" | "Right"
 
 const elementMovable = (element: Element): boolean => {
-  return (["Start", "Box", "AltStart"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
+  return (["Start", "Box", "AltStart", "BlueBox"].includes(element.type)) && element.state !== "Triggered" && element.state !== "Void";
 };
 
 const elementsCanInteract = (ele1: Element, ele2: Element) => {
-  if ([ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End" && ele.state !== "Triggered")) {
+  if (["Start", "AltStart", "Box"].includes(ele1.type) && [ele1, ele2].find(ele => ele.type === "Start") && [ele1, ele2].find(ele => ele.type === "End" && ele.state !== "Triggered")) {
     return true;
   }
-  if ([ele1, ele2].find(ele => ele.type === "AltStart") && [ele1, ele2].find(ele => ele.type === "AltEnd" && ele.state !== "Triggered")) {
+  if (["Start", "AltStart", "Box"].includes(ele1.type) && [ele1, ele2].find(ele => ele.type === "AltStart") && [ele1, ele2].find(ele => ele.type === "AltEnd" && ele.state !== "Triggered")) {
     return true;
   }
-  if ([ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
+  if (["Start", "AltStart", "Box"].includes(ele1.type) && [ele1, ele2].find(ele => ele.type === "GreenField" && ele.state !== "Triggered")) {
     return true;
   }
-  if (ele2.type === "RedField"){
+  if (ele2.type === "BluePath") {
     return true;
   }
-  if (ele2.state === "Void") {
+  if (["Start", "AltStart", "Box"].includes(ele1.type) && ele2.type === "RedField"){
+    return true;
+  }
+  if (["Start", "AltStart", "Box"].includes(ele1.type) && ele2.state === "Void") {
     return true;
   }
   return false;
@@ -113,7 +116,7 @@ export const move = (elements: CurrentElement[], direction: Direction, boardSize
         const {attX, attY} = getAttemptedPos(element, direction)
         if (!outOfBounds(attX, attY, boardSize)) {
           const elementOnAttPos = findElementOnAttPos(attX, attY, elements);
-          if (!elementOnAttPos || elementsCanInteract(element, elementOnAttPos)) {
+          if ((!elementOnAttPos && element.type !== "BlueBox") || (elementOnAttPos && elementsCanInteract(element, elementOnAttPos))) {
             tryToMove = true;
             interact(element, elementOnAttPos);
             element.posX = attX;
