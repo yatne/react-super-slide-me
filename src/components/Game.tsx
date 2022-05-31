@@ -18,13 +18,17 @@ interface Props {
 export const Game = (props : Props) => {
   const dispatch = useDispatch<AppDispatch>()
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
-  const maxLevel = useSelector((state: RootState) => state.game.unlockedLevel)
   const levelCount = useSelector((state: RootState) => state.game.levels.length)
+  const maxLevel = useSelector((state: RootState) => state.game.unlockedLevel)
 
   useEffect(() => {
     dispatch(gameSlice.actions.loadLevels(prepareLevels(props.levelConfig, props.customLevels)));
-    dispatch(gameSlice.actions.startLevel(maxLevel));
+    dispatch(gameSlice.actions.setGameId(props.gameId));
   }, [])
+
+  useEffect(() => {
+    dispatch(gameSlice.actions.startLevel(maxLevel));
+  }, [maxLevel]);
 
   const onLevelFinished = () => {
     setTimeout(() => {

@@ -3,12 +3,12 @@ import type {CurrentLevel, Level} from '../SuperSlideMe'
 import {move, sortByRenderOrder} from "./movementLogic";
 import {Element, CurrentElement} from "../components/StyledElements";
 
-const save = (levelNumber: number) => {
-  localStorage.setItem("unlockedLevel", levelNumber.toString());
+const save = (gameId: string, levelNumber: number) => {
+  localStorage.setItem(gameId, levelNumber.toString());
 }
 
-const load = (): number => {
-  return parseInt(localStorage.getItem("unlockedLevel") || '0');
+const load = (gameId: string): number => {
+  return parseInt(localStorage.getItem(gameId) || '0');
 }
 // Define a type for the slice state
 export interface GameState {
@@ -17,6 +17,7 @@ export interface GameState {
   currentLevelState: CurrentLevel | null,
   endGameReached: boolean,
   unlockedLevel: number,
+  gameId: string,
 }
 
 // Define the initial state using that type
@@ -25,7 +26,8 @@ const initialState: GameState = {
   currentLevelNumber: 0,
   currentLevelState: null,
   endGameReached: false,
-  unlockedLevel: load(),
+  unlockedLevel: load("null"),
+  gameId: "",
 }
 
 const transformToCurrentLevel = (level: Level, index: number): CurrentLevel => {
@@ -59,7 +61,7 @@ export const gameSlice = createSlice({
       sortByRenderOrder(state.currentLevelState.elements)
       if (state.unlockedLevel < action.payload) {
         state.unlockedLevel = action.payload;
-        save(action.payload);
+        save(state.gameId, action.payload);
       }
     },
     nextLevel: (state, action: PayloadAction) => {
@@ -94,6 +96,10 @@ export const gameSlice = createSlice({
       if (state.currentLevelState === null ) return
       state.currentLevelState.elements = move(state.currentLevelState.elements, 'Down', state.currentLevelState.boardSize)
     },
+    setGameId: (state, action:PayloadAction<string>) => {
+      state.gameId = action.payload;
+      state.unlockedLevel = load(action.payload);
+    }
   }
 })
 

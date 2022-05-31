@@ -36,7 +36,7 @@ export interface CurrentLevel {
   boardSize: number,
 }
 
-export const store = configureStore({
+let store = configureStore({
   reducer: {
     game: gameReducer,
   },
