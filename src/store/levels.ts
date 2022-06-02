@@ -7,6 +7,12 @@ import {BHard} from "./levelPacks/b-hard";
 import {CEasy} from "./levelPacks/c-easy";
 import {CHard} from "./levelPacks/c-hard";
 import {XHard} from "./levelPacks/x-hard";
+import {DEasy} from "./levelPacks/d-easy";
+import {DHard} from "./levelPacks/d-hard";
+import {EEasy} from "./levelPacks/e-easy";
+import {EHard} from "./levelPacks/e-hard";
+import {FEasy} from "./levelPacks/f-easy";
+import {FHard} from "./levelPacks/f-hard";
 
 export type ReadableLevel = string;
 
@@ -22,6 +28,18 @@ const availableLevels = {
   setC: {
     easy: CEasy,
     hard: CHard,
+  },
+  setD: {
+    easy: DEasy,
+    hard: DHard,
+  },
+  setE: {
+    easy: EEasy,
+    hard: EHard,
+  },
+  setF: {
+    easy: FEasy,
+    hard: FHard,
   },
   setX: {
     easy: [],
@@ -47,7 +65,7 @@ const endLevel: ReadableLevel =
 const loadLevelsByConfig = (config: LevelConfig, additionalLevels: ReadableLevel[]): ReadableLevel[] => {
   const levels: ReadableLevel[] = [];
   if (config.levelSets === undefined) {
-    config.levelSets = ["A", "B", "C", "X"];
+    config.levelSets = ["A", "B", "C", "D", "E", "F", "X"];
   }
   config.levelSets?.forEach((levelSet) => {
     switch (levelSet) {
@@ -59,6 +77,15 @@ const loadLevelsByConfig = (config: LevelConfig, additionalLevels: ReadableLevel
         break
       case "C":
         levels.push(...loadLevelSetByConfig(config, availableLevels.setC));
+        break
+      case "D":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setD));
+        break
+      case "E":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setE));
+        break
+      case "F":
+        levels.push(...loadLevelSetByConfig(config, availableLevels.setF));
         break
       case "X":
         if (config.levelFilter !== "short") {

@@ -102,7 +102,7 @@ export const BluePathElement = styled(StyledElement)<ElementProps>`
 
 export const OrangeWallElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px ${props => props.state === "Void" ? "#818181" : "#252525" };
-  background-color: ${props => props.state === "Void" ? "rgba(255,237,200,0.96)" : "#f8c503"};
+  background-color: ${props => props.state === "Void" ? "rgba(255,237,200,0.96)" : "#e7a600"};
   border-radius: 5%;
   z-index: ${props => props.state === "Void" ? "200" : "300"};
 `
@@ -111,9 +111,9 @@ export const CrusherElement = styled(StyledElement)`
   box-shadow: inset 0 0 5px 1px #252525;
   background-color: #484848;
   border-radius: 50%;
-  border: 5px double #f8c503;
+  border: 5px double #e7a600;
   box-sizing: border-box;
-  z-index: 500;
+  z-index: ${props => props.state === "Void" ? '200' : '300'};
 `
 
 export const VoidElement = styled(StyledElement)`

@@ -1,19 +1,17 @@
 import {ReadableLevel} from "../levels";
 
 export const AEasy: ReadableLevel[] = [
-  'e.....' +
-  'rrprrr' +
-  '.ppbbr' +
-  'x.p.bb' +
-  's.B..b' +
-  'S.B.E.',
+  'xxxx' +
+  '.s.e' +
+  'xxxx' +
+  'xxxx',
 
   'xxxxxx' +
-  'x....x' +
-  '.s...x' +
-  '...e..' +
-  'o.....' +
-  'c.....',
+  'xxx..x' +
+  'xs...x' +
+  'xxx.xx' +
+  'xxx.xx' +
+  'xxxexx',
 
   '..x...' +
   '......' +
