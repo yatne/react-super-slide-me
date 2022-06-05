@@ -17,7 +17,7 @@ export type levelSet = "A" | "B" | "C" | "D" | "E" | "F" | "X";
 export type levelFilter = "all" | "onlyEasy" | "onlyHard" | "short" | "onlyCustom";
 
 interface GameProps {
-  width: number;
+  width?: number;
   onLastLevelReached?: () => unknown,
   levelConfig?: LevelConfig,
   customLevels?: ReadableLevel[],
