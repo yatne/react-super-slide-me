@@ -12,7 +12,7 @@ import {
 import {AppDispatch, Level, RootState} from "../SuperSlideMe";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {gameSlice} from "../store/gameReducer";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {longestMove} from "../store/timeLogic";
 import {useSwipeable} from "react-swipeable";
 
@@ -35,6 +35,7 @@ const BoardContainer = styled.div<ContainerProps>`
   height: ${props => props.theme.width ? props.theme.width : '400px'};
   background-color: white;
   padding: ${props => props.theme.gameBoardMargin} ;
+  cursor: pointer;
 `
 
 export const GameBoard = (props : Props) => {
@@ -51,7 +52,7 @@ export const GameBoard = (props : Props) => {
     return fs;
   }, [currentLevel]);
 
-
+  const gameRef = useRef(null);
   const [blocked, setBlocked] = useState(false);
   const [blockStart, setBlockStart] = useState(false);
   const handlers = useSwipeable({
@@ -128,9 +129,11 @@ export const GameBoard = (props : Props) => {
       }
     }
 
-    document.addEventListener('keydown', arrowEventListenerFunction);
+    // @ts-ignore
+    gameRef.current.addEventListener('keydown', arrowEventListenerFunction);
     return () => {
-      document.removeEventListener('keydown', arrowEventListenerFunction)
+      // @ts-ignore
+      gameRef.current.removeEventListener('keydown', arrowEventListenerFunction)
     }
   }, []);
 
@@ -142,7 +145,7 @@ export const GameBoard = (props : Props) => {
 
 
   return (
-    <BoardContainer {...handlers}>
+    <BoardContainer {...handlers} ref={gameRef} tabIndex={0}>
       {currentLevel ? (
         <>
           {fields.map((fieldNr) =>

@@ -14,7 +14,10 @@ You can customise the game to your liking using props.
 <table>
     <tr>
         <td>id</td>
-        <td>Optional id. It is passed to the game component. Can be used to find the game in the DOM, for css styles etc.</td>
+        <td>Mostly optional id. It is passed to the game component. Can be used to find the game in the DOM, for css styles etc.
+
+It is required only if you embed two games, with the same level config at once.
+</td>
     </tr>
     <tr>
         <td>width</td>

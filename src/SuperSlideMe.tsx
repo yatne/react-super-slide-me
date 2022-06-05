@@ -3,11 +3,10 @@ import {ThemeProvider} from "styled-components";
 import {theme} from "./components/theme";
 import {Provider} from "react-redux";
 import { configureStore} from "@reduxjs/toolkit";
-import gameReducer from "./store/gameReducer";
+import gameReducer, {GameState} from "./store/gameReducer";
 import {CurrentElement, Element} from "./components/StyledElements";
 import {Game} from "./components/Game";
 import {ReadableLevel} from "./store/levels";
-import {useEffect, useMemo, useState} from "react";
 
 export interface LevelConfig {
   levelSets?: levelSet[],
@@ -36,14 +35,14 @@ export interface CurrentLevel {
   boardSize: number,
 }
 
-let store = configureStore({
+let otherStore = configureStore({
   reducer: {
     game: gameReducer,
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = {game: GameState}
+export type AppDispatch = typeof otherStore.dispatch
 
 const defaultLevelConfig: LevelConfig = {
   levelSets: ["A", "B", "C", "D", "E", "F", "X"],
@@ -61,42 +60,62 @@ const createSomeId = (id: string | undefined, levelConfig: LevelConfig | undefin
   return `${levelSetsPart}-${levelFilterPart}-${customLevelsPart}`;
 }
 
-export const SuperSlideMe = ({width, onLastLevelReached, customLevels, levelConfig, id}: GameProps) => {
-  const gameId = useMemo(() => createSomeId(id, levelConfig, customLevels), [id, levelConfig, customLevels]);
-  const [gameWidth, setGameWidth] = useState(width);
-  const [gameBoardMargin, setGameBoardMargin] = useState(Math.floor(width/25));
-  const [buttonFontSize, setButtonFontSize] = useState(1);
+export class SuperSlideMe extends React.Component<GameProps, any> {
+  store;
+  gameId: string;
 
-  useEffect(() => {
-    setCurrentWidth();
-    addEventListener('resize', setCurrentWidth);
-    return () => removeEventListener("resize", setCurrentWidth);
-  }, [])
-
-  const setCurrentWidth = () => {
-    const parentNodeWidth = document?.getElementById(gameId)?.parentElement?.clientWidth;
-    const calculatedGameWidth = width || parentNodeWidth || 400;
-    setGameWidth(calculatedGameWidth);
-    setGameBoardMargin(Math.floor(calculatedGameWidth/25));
-    setButtonFontSize(Math.floor(calculatedGameWidth/35));
+  constructor(props: any) {
+    super(props);
+    this.store = configureStore({
+      reducer: {
+        game: gameReducer,
+      },
+    });
+    this.state = {
+      gameWidth: props.width,
+      gameBoardMargin: Math.floor(props.width / 25),
+      buttonFontSize: 1,
+    }
+    this.gameId = createSomeId(props.id, props.levelConfig, props.customLevels)
   }
 
-  return (
-    <div id={gameId}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme({
-          width: `${gameWidth - 2*gameBoardMargin}px`,
-          gameBoardMargin: `${gameBoardMargin}px`,
-          buttonFontSize: `${buttonFontSize}px`,
-        })}>
-          <Game
-            gameId={gameId}
-            onLastLevelReached={onLastLevelReached}
-            levelConfig={levelConfig || defaultLevelConfig}
-            customLevels={customLevels || []}
-          />
-        </ThemeProvider>
-      </Provider>
-    </div>
-  )
+  setCurrentWidth() {
+    const parentNodeWidth = document?.getElementById(this.gameId)?.parentElement?.clientWidth;
+    const calculatedGameWidth = this.props.width || parentNodeWidth || 400;
+    this.setState({
+      gameWidth: calculatedGameWidth,
+      gameBoardMargin: Math.floor(calculatedGameWidth / 25),
+      buttonFontSize: Math.floor(calculatedGameWidth/35),
+    });
+  }
+
+  componentDidMount() {
+    this.setCurrentWidth();
+    addEventListener('resize', this.setCurrentWidth);
+  }
+
+  componentWillUnmount() {
+    removeEventListener("resize", this.setCurrentWidth);
+  }
+
+  render() {
+    return (
+      <div id={this.gameId}>
+        <Provider store={this.store}>
+          <ThemeProvider theme={theme({
+            width: `${this.state.gameWidth - 2 * this.state.gameBoardMargin}px`,
+            gameBoardMargin: `${this.state.gameBoardMargin}px`,
+            buttonFontSize: `${this.state.buttonFontSize}px`,
+          })}>
+            <Game
+              gameId={this.gameId}
+              onLastLevelReached={this.props.onLastLevelReached}
+              levelConfig={this.props.levelConfig || defaultLevelConfig}
+              customLevels={this.props.customLevels || []}
+            />
+          </ThemeProvider>
+        </Provider>
+      </div>
+    )
+  }
 }
