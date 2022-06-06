@@ -40,8 +40,7 @@ const BoardContainer = styled.div<ContainerProps>`
 
 export const GameBoard = (props : Props) => {
   const currentLevel = useSelector((state: RootState) => state.game.currentLevelState)
-  const currentLevelNumber = useSelector((state: RootState) => state.game.currentLevelNumber)
-  const dispatch = useDispatch<AppDispatch>()
+
   const fields = useMemo(() => {
     const fs = []
     if (currentLevel !== null) {
@@ -52,90 +51,6 @@ export const GameBoard = (props : Props) => {
     return fs;
   }, [currentLevel]);
 
-  const gameRef = useRef(null);
-  const [blocked, setBlocked] = useState(false);
-  const [blockStart, setBlockStart] = useState(false);
-  const handlers = useSwipeable({
-    onSwipedLeft: () => moveLeft(),
-    onSwipedRight: () => moveRight(),
-    onSwipedUp: () => moveUp(),
-    onSwipedDown: () => moveDown(),
-    trackMouse: true,
-    preventScrollOnSwipe: true,
-  });
-
-  const blockedRef = React.useRef(blocked);
-  const setBlock = (block: boolean) => {
-    blockedRef.current = block;
-    setBlocked(block);
-  };
-
-  const startBlockade = (moveTime: number) => {
-    setTimeout(() => {
-      setBlock(false);
-    }, Math.max(moveTime-100, 0))
-  }
-
-  if (blockStart) {
-    if (currentLevel === null) return null;
-    const moveTime = longestMove(currentLevel.elements, currentLevel.boardSize);
-    setBlockStart(false);
-    setBlock(true);
-    startBlockade(moveTime);
-  }
-
-  const moveLeft = () => {
-    dispatch(gameSlice.actions.moveLeft());
-    setBlockStart(true);
-  }
-
-  const moveRight = () => {
-    dispatch(gameSlice.actions.moveRight());
-    setBlockStart(true);
-  }
-
-  const moveUp = () => {
-    dispatch(gameSlice.actions.moveUp());
-    setBlockStart(true);
-  }
-
-  const moveDown = () => {
-    dispatch(gameSlice.actions.moveDown());
-    setBlockStart(true);
-  }
-
-  useEffect(() => {
-    const arrowEventListenerFunction = (e: KeyboardEvent) => {
-      if (!blockedRef.current) {
-        switch (e.key) {
-          case "ArrowUp":
-            e.preventDefault()
-            moveUp();
-            break;
-          case "ArrowDown":
-            e.preventDefault()
-            moveDown();
-            break;
-          case "ArrowLeft":
-            moveLeft();
-            break;
-          case "ArrowRight":
-            moveRight();
-            break;
-          case "R":
-            gameSlice.actions.startLevel(currentLevelNumber);
-            break;
-        }
-      }
-    }
-
-    // @ts-ignore
-    gameRef.current.addEventListener('keydown', arrowEventListenerFunction);
-    return () => {
-      // @ts-ignore
-      gameRef.current.removeEventListener('keydown', arrowEventListenerFunction)
-    }
-  }, []);
 
   useEffect(() => {
     if (!currentLevel?.elements.find(element => ["Start", "AltStart"].includes(element.type) && element.state !== "Triggered")) {
@@ -145,7 +60,7 @@ export const GameBoard = (props : Props) => {
 
 
   return (
-    <BoardContainer {...handlers} ref={gameRef} tabIndex={0}>
+    <BoardContainer>
       {currentLevel ? (
         <>
           {fields.map((fieldNr) =>
