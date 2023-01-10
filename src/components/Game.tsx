@@ -42,7 +42,9 @@ export const Game = (props : Props) => {
     onSwipedUp: () => moveUp(),
     onSwipedDown: () => moveDown(),
     trackMouse: true,
+    trackTouch: true,
     preventScrollOnSwipe: true,
+    delta: 4,
   });
 
   const blockedRef = React.useRef(blocked);
